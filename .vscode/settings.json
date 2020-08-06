@@ -1,0 +1,18 @@
+{
+    "cSpell.words": [
+        "Cmdlet",
+        "HKLM",
+        "Mkdir",
+        "Omiga",
+        "Sanderson",
+        "pscmdlet",
+        "psobject",
+        "recurse",
+        "ruamel",
+        "scriptblock",
+        "securestring",
+        "snapin"
+    ],
+    "powershell.codeFormatting.addWhitespaceAroundPipe": true,
+    "python.pythonPath": "C:\\Users\\h.sanderson\\AppData\\Local\\Programs\\Python\\Python38\\python.exe"
+}

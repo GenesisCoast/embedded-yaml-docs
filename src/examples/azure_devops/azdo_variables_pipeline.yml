@@ -1,0 +1,62 @@
+trigger: none
+
+pool: DA-PBA
+
+variables:
+# Description:
+#   This parameter does A.
+- name: System.Debug
+  value: true
+
+# This variable does X
+# and Y.
+- name: computeResourceGroupName
+  value: rg-ne-compute-001
+
+# This is one comment
+
+# This is another comment.
+- name: connectedServiceName
+  value: rg-ne-compute-001-sc
+
+- name: containerInstanceName
+  value: ci-ne-compute-001
+
+- name: containerImage
+  value: mcr.microsoft.com/azuredocs/aci-helloworld
+
+- name: logAnalyticsName
+  value: la-ne-compute-001
+
+- name: networkingType
+  value: Private
+
+- name: networkSecurityGroupName
+  value: nsg-ne-compute-001
+
+- name: osType
+  value: Linux
+
+- name: resourceGroupName
+  value: rg-ne-test-001
+
+- name: restartPolicy
+  value: onfailure
+
+- name: subscriptionID
+  value: 775f881f-3b6b-45af-83e9-87e7b9b0bf01
+
+- name: storageAccountName
+  value: sanecompute001
+
+- name: subnetAddressPrefix
+  value: 10.5.200.0/24
+
+- name: subnetName
+  value: snet-ne-compute-001
+
+- name: virtualNetworkAddressPrefix
+  value: 10.5.200.0/24
+
+- name: virtualNetworkName
+  value: vnet-ne-compute-001
