@@ -2,22 +2,24 @@ trigger: none
 
 pool: DA-PBA
 
-variables:
-# Description:
-#   This parameter does A.
-- name: System.Debug
-  value: true
-
-# This variable does X
-# and Y.
+parameters:
 - name: computeResourceGroupName
   value: rg-ne-compute-001
+  # This variable does X
+  # and Y.
 
-# This is one comment
+- name: System.Debug
+  value: true
+  # Description:
+  #   This parameter does A.
+  # Name: New
 
-# This is another comment.
 - name: connectedServiceName
   value: rg-ne-compute-001-sc
+  # Description:
+  #   This does ABC.
+  # Example:
+  #   rg-ne-compute-001-sc
 
 - name: containerInstanceName
   value: ci-ne-compute-001
@@ -60,3 +62,8 @@ variables:
 
 - name: virtualNetworkName
   value: vnet-ne-compute-001
+
+steps:
+- script: echo "123"
+  # Description:
+  #   xyz

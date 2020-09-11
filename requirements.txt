@@ -1,2 +1,2 @@
 Jinja2
-ruamel.yaml
+ruamel.yaml==0.16.6

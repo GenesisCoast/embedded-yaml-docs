@@ -22,7 +22,7 @@ The template has the following schema. Objects are documented in additional sub-
 steps:
 - template: {{ _file.full_name }}
   parameters:
-    {% for parameter in _parameters %}
+    {% for parameter in _parameters | sort(attribute="name") -%}
         {{ parameter.name }}: {{ parameter.type }} # {{ parameter.description }}
     {% endfor %}
 ```
@@ -37,7 +37,7 @@ This example shows how to execute the template, with all the possible parameters
 steps:
 - template: {{ _file.full_name }}
   parameters:
-    {% for parameter in _parameters %}
+    {% for parameter in _parameters | sort(attribute="name") -%}
         {{ parameter.name }}: {{ parameter.example }}
     {% endfor %}
 ```
@@ -71,11 +71,11 @@ steps:
 
 - template: {{ _file.full_name }}
   parameters:
-    {% for parameter in _parameters %}
-      {% if '$(' not in parameter.default %}
+    {% for parameter in _parameters | sort(attribute="name") -%}
+      {% if '$(' not in parameter.default -%}
         {{ parameter.name }}: {{ parameter.example }}
       {% endif %}
-    {% endfor %}
+    {%- endfor %}
 ```
 
 ---
@@ -97,11 +97,11 @@ steps:
 
 - template: {{ _file.full_name }}
   parameters:
-    {% for parameter in _parameters %}
-      {% if not parameter.default %}
+    {% for parameter in _parameters | sort(attribute="name") -%}
+      {% if not parameter.default -%}
         {{ parameter.name }}: {{ parameter.example }}
       {% endif %}
-    {% endfor %}
+    {%- endfor %}
 ```
 
 ---
@@ -124,11 +124,11 @@ steps:
 
 - template: {{ _file.full_name }}@iac
   parameters:
-    {% for parameter in _parameters %}
-      {% if '$(' not in parameter.default %}
+    {% for parameter in _parameters | sort(attribute="name") -%}
+      {% if '$(' not in parameter.default -%}
         {{ parameter.name }}: {{ parameter.example }}
       {% endif %}
-    {% endfor %}
+    {%- endfor %}
 ```
 
 {% if 'resourceTags' in _parameters %}
@@ -146,16 +146,16 @@ steps:
 
 - template: {{ _file.full_name }}@iac
   parameters:
-    {% for parameter in _parameters %}
-      {% if parameter.default != '' %}
+    {% for parameter in _parameters | sort(attribute="name") -%}
+      {% if parameter.default != '' -%}
         {{ parameter.name}}: {{ parameter.example }}
       {% endif %}
-    {% endfor %}
+    {%- endfor %}
 ```
 
 {% endif %}
 
-{% for parameter in _parameters %}
+{% for parameter in _parameters | sort(attribute="name") %}
 
   {% if parameter.type == 'object' %}
 
@@ -171,9 +171,9 @@ The following schema is observed.
 
 ```yml
 {{ parameter.name }}:
-  {% for property in parameter._properties %}
+  {% for property in parameter._properties -%}
       {{ property.name }}: {{ property.type }} # {{ property.description }}
-  {% endfor %}
+  {%- endfor %}
 ```
 
 ---
@@ -184,9 +184,9 @@ Here is an example of how the object can be used.
 
 ```yml
 {{ parameter.name }}:
-  {% for property in parameter._properties %}
-    {{ property.name }}: {{ property.example }}
-  {% endfor %}
+  {% for property in parameter._properties -%}
+    {{ property.name }}: {{ property.example | trim() }}
+  {%- endfor %}
 ```
 
 </div>

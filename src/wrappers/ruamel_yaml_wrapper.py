@@ -3,12 +3,17 @@ import os
 from ruamel.yaml import YAML
 from ruamel.yaml.tokens import CommentToken
 from ruamel.yaml.compat import StringIO
-
+from ruamel.yaml.loader import RoundTripLoader
+from ruamel.yaml import round_trip_load
 
 class RuamelYamlWrapper(YAML):
     """
     Custom implementation of the ruamel library.
     """
+
+
+    def __init__(self):
+        super().__init__(typ='rt')
 
 
     def dump_str(self, data: any, **kwargs) -> str:
@@ -37,8 +42,13 @@ class RuamelYamlWrapper(YAML):
         """
 
         """
-        return super().load(open(path).read())
+        return self.load(open(path).read())
 
+    def load(self, stream) -> any:
+        """
+
+        """
+        return round_trip_load(stream)
 
     def load_from_relative_file(self, rel_path: str, root: str) -> any:
         """
