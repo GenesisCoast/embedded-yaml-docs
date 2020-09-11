@@ -1,0 +1,196 @@
+[&#11013; Back to the {{ _file.name }} resource](Templates/master/{{ _file.directory }})
+
+<br>
+
+[[_TOC_]]
+
+# Introduction
+
+The following page documents the template `/resource/{{ _file.full_name }}` which is used to deploy the {{ _file.name }} resource.
+
+# Parameters
+
+Below is a list of the parameters used for the template. Any optional or auto-generated arguments are specified in the schema.
+
+<div style="border:1px solid var(--border-subtle-color);padding:15px 15px 0px 15px">
+
+<span style="color:var(--text-secondary-color)"><strong>Schema:</strong></span>
+
+The template has the following schema. Objects are documented in additional sub-sections below.
+
+```yml
+steps:
+- template: {{ _file.full_name }}
+  parameters:
+    {% for parameter in _parameters %}
+        {{ parameter.name }}: {{ parameter.type }} # {{ parameter.description }}
+    {% endfor %}
+```
+
+---
+
+<div style="color:rgba(0,0,0,.6);margin: 15px 0 16px 0"><strong>Example (with all parameters):</strong></div>
+
+This example shows how to execute the template, with all the possible parameters populated.
+
+```yml
+steps:
+- template: {{ _file.full_name }}
+  parameters:
+    {% for parameter in _parameters %}
+        {{ parameter.name }}: {{ parameter.example }}
+    {% endfor %}
+```
+
+{% if 'resourceTags' in _parameters or 'resourceTagsString' in _parameters %}
+
+<div style="background:#e2daf1;padding:16px 16px 0px 16px;border: 1px solid #e2daf1;color:#000">
+
+<div style="color:#38225d;font-weight:600;font-size: 1.2em">
+
+&#10068;&nbsp;&nbsp;Note
+
+</div>
+
+You should only specify a value for either `resourceTags` or `resourceTagsString`. Do not specify both of the parameters.
+
+</div>
+
+{% endif %}
+
+---
+
+<div style="color:rgba(0,0,0,.6);margin: 15px 0 16px 0"><strong>Example (with only mandatory parameters):</strong></div>
+
+This example shows how to use the template, with only the mandatory parameters specified.
+
+```yml
+steps:
+- checkout: self
+  path: paf
+
+- template: {{ _file.full_name }}
+  parameters:
+    {% for parameter in _parameters %}
+      {% if '$(' not in parameter.default %}
+        {{ parameter.name }}: {{ parameter.example }}
+      {% endif %}
+    {% endfor %}
+```
+
+---
+
+<div style="color:rgba(0,0,0,.6);margin: 15px 0 16px 0"><strong>Example (with auto-generation):</strong></div>
+
+This example shows how to use parameters with auto-generation, which allows you to use the bare minimum parameters.
+
+```yml
+variables:
+  site: mneu
+  environment: dev
+  role: daaml
+  increment: 001
+
+steps:
+- checkout: self
+  path: paf
+
+- template: {{ _file.full_name }}
+  parameters:
+    {% for parameter in _parameters %}
+      {% if not parameter.default %}
+        {{ parameter.name }}: {{ parameter.example }}
+      {% endif %}
+    {% endfor %}
+```
+
+---
+
+<div style="color:rgba(0,0,0,.6);margin: 15px 0 16px 0"><strong>Example (with framework version):</strong></div>
+
+This example shows how to use parameters with auto-generation, which allows you to use the bare minimum parameters.
+
+```yml
+resources:
+  repositories:
+  - repository: iac
+    name: test
+    ref: releases/master
+    type: git
+
+steps:
+- checkout: iac
+  path: paf
+
+- template: {{ _file.full_name }}@iac
+  parameters:
+    {% for parameter in _parameters %}
+      {% if '$(' not in parameter.default %}
+        {{ parameter.name }}: {{ parameter.example }}
+      {% endif %}
+    {% endfor %}
+```
+
+{% if 'resourceTags' in _parameters %}
+
+---
+
+<div style="color:rgba(0,0,0,.6);margin: 15px 0 16px 0"><strong>Example (with resource tags):</strong></div>
+
+This example shows how to specify resource tags for the template.
+
+```yml
+steps:
+- checkout: self
+  path: paf
+
+- template: {{ _file.full_name }}@iac
+  parameters:
+    {% for parameter in _parameters %}
+      {% if parameter.default != '' %}
+        {{ parameter.name}}: {{ parameter.example }}
+      {% endif %}
+    {% endfor %}
+```
+
+{% endif %}
+
+{% for parameter in _parameters %}
+
+  {% if parameter.type == 'object' %}
+
+## {{ parameter.name }}
+
+{{ parameter.description }}
+
+<div style="border:1px solid var(--border-subtle-color);padding:15px 15px 0px 15px">
+
+<span style="color:var(--text-secondary-color)"><strong>Schema:</strong></span>
+
+The following schema is observed.
+
+```yml
+{{ parameter.name }}:
+  {% for property in parameter._properties %}
+      {{ property.name }}: {{ property.type }} # {{ property.description }}
+  {% endfor %}
+```
+
+---
+
+<div style="color:var(--text-secondary-color);margin: 15px 0 16px 0"><strong>Example:</strong></div>
+
+Here is an example of how the object can be used.
+
+```yml
+{{ parameter.name }}:
+  {% for property in parameter._properties %}
+    {{ property.name }}: {{ property.example }}
+  {% endfor %}
+```
+
+</div>
+
+{% endif %}
+
+{% endfor %}

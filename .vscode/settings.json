@@ -3,8 +3,6 @@
         "Cmdlet",
         "HKLM",
         "Mkdir",
-        "Omiga",
-        "Sanderson",
         "pscmdlet",
         "psobject",
         "recurse",
@@ -14,5 +12,5 @@
         "snapin"
     ],
     "powershell.codeFormatting.addWhitespaceAroundPipe": true,
-    "python.pythonPath": "C:\\Users\\h.sanderson\\AppData\\Local\\Programs\\Python\\Python38\\python.exe"
+    "python.pythonPath": "${env:USERPROFILE}\\AppData\\Local\\Programs\\Python\\Python38-32\\python.exe"
 }
