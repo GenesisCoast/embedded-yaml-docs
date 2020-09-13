@@ -1,19 +1,15 @@
 import os
 import sys
-from typing import Iterator, List, Tuple
+from pathlib import Path
+from typing import List
 
-from ruamel.yaml import YAML
 import click
 from jinja2 import Template
 from pyfiglet import Figlet
 
-from docs_processor import DocsProcessor
-from ruamel_yaml_wrapper import RuamelYamlWrapper
 from models.file import File
-from custom_loader import Hero
+from yaml_docs_parser import YAMLDocsParser
 
-
-from pathlib import Path, WindowsPath
 
 f = Figlet(font='slant', justify='')
 print(f.renderText("Embedded YAML Docs"))
@@ -34,7 +30,7 @@ def main(path, search_pattern, recurse):
         files = list(Path(path).glob(search_pattern))
 
     # Prepare the libaries.
-    parser = RuamelYamlWrapper()
+    parser = YAMLDocsParser()
 
     # Loop through each of the files and generate the docs.
     for f in files:

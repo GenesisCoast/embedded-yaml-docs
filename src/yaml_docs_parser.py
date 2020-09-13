@@ -1,31 +1,17 @@
 import os
+from typing import Iterator, List, Tuple, Final
 
-from ruamel.yaml import YAML
-from ruamel.yaml.tokens import CommentToken
-from ruamel.yaml.compat import StringIO
-from ruamel.yaml.loader import RoundTripLoader
-from ruamel.yaml import round_trip_load, safe_load, load
-from helpers.string_helper import StringHelper
-# from wrappers.commented_seq_docs import CommentedSeqDocsWrapper
-from yaml_docs_loader import YAMLDocsLoader
-from typing import Tuple, Iterator, List
-from yaml_docs_constructor import YAMLDocsConstructor
+from ruamel.yaml import YAML, safe_load
 from ruamel.yaml.comments import CommentedSeq
+from ruamel.yaml.compat import StringIO
+
+from helpers.string_helper import StringHelper
 
 
 class YAMLDocsParser(YAML):
     """
     Custom implementation of the ruamel library.
     """
-
-
-    def __init__(self):
-        super().__init__(typ='rt')
-
-        # self.Representer = ruamel.yaml.representer.RoundTripRepresenter
-        # self.Scanner = ruamel.yaml.scanner.RoundTripScanner
-        # self.Parser = ruamel.yaml.parser.RoundTripParser
-        self.Constructor = YAMLDocsConstructor
 
 
     def dump_str(self, data: any, **kwargs) -> str:
@@ -54,7 +40,7 @@ class YAMLDocsParser(YAML):
         """
 
         """
-        return load(stream, YAMLDocsLoader)
+        return super().load(stream)
 
 
     def load_from_file(self, path: str) -> any:
@@ -62,18 +48,6 @@ class YAMLDocsParser(YAML):
 
         """
         return self.load(open(path).read())
-
-
-    def load_from_relative_file(self, rel_path: str, root: str) -> any:
-        """
-
-        """
-        return self.load_from_file(
-            os.path.join(
-                root,
-                rel_path
-            )
-        )
 
 
     def format_comment(self, comment: str) -> str:
@@ -163,6 +137,8 @@ class YAMLDocsParser(YAML):
             supplied section and a Tuple; that contains the corresponding YAML token
             and extracted comment.
         """
+        DOCS_PROPERTY_NAME: Final = 'docs'
+
         # Extract the comments for a dictionary section.
         if isinstance(section, dict):
             # Get inline comments
@@ -207,10 +183,10 @@ class YAMLDocsParser(YAML):
                             # Add the docs to the 'key: str' pair. The pair is re-initialized
                             # above so that the structure is consistent; 'key: { value: str, docs: {} }'.
                             if isinstance(val, str):
-                                section[key]['docs'] = comment
+                                section[key][DOCS_PROPERTY_NAME] = comment
                         else:
                             if not isinstance(val, dict):
-                                section['docs'] = comment
+                                section[DOCS_PROPERTY_NAME] = comment
 
         # Extract the comments for a list section.
         elif isinstance(section, list):
@@ -234,5 +210,5 @@ class YAMLDocsParser(YAML):
                 # Are there item specific comments?
                 if index in section.ca.items:
                     for comment in self.extract_comment_from_token(section.ca.items[index]):
-                        if 'docs' not in section[index]:
-                            section[index]['docs'] = comment
+                        if DOCS_PROPERTY_NAME not in section[index]:
+                            section[index][DOCS_PROPERTY_NAME] = comment
