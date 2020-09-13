@@ -87,34 +87,47 @@ class DocsProcessor:
             and extracted comment.
         """
         if isinstance(section, dict):
-            # Handle the root of a file.
+            # Get inline comments
             # if section.ca.comment is not None:
             #     for comment in extract_comment_from_token(section.ca.comment):
             #         yield section, comment
 
             for key, val in section.items():
 
+                if isinstance(val, str):
+                    section[key] = {
+                        'name': key,
+                        'value': val
+                    }
+
                 for comment in self.get_yaml_comments(val):
                     yield section, comment
 
                 if key in section.ca.items:
                     for comment in self.extract_comment_from_token(section.ca.items[key]):
+                        section[key]['docs'] = comment
                         yield section, comment
 
         # To handle lists
         elif isinstance(section, list):
-
+            # Get inline comments.
             # if section.ca.comment is not None:
             #     for comment in extract_comment_from_token(section.ca.comment):
             #         yield section, comment
 
             for idx, item in enumerate(section):
 
+                if isinstance(item, str):
+                    section[idx] = {
+                        'value': item
+                    }
+
                 for comment in self.get_yaml_comments(item):
                     yield section, comment
 
                 if idx in section.ca.items:
                     for comment in self.extract_comment_from_token(section.ca.items[idx]):
+                        section[idx]['docs'] = comment
                         yield section, comment
 
 

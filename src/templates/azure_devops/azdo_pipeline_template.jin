@@ -155,9 +155,9 @@ steps:
 
 {% endif %}
 
-{% for parameter in _parameters | sort(attribute="name") %}
+{% for parameter in _parameters | sort(attribute="name") -%}
 
-  {% if parameter.type == 'object' %}
+  {% if parameter.type == 'object' -%}
 
 ## {{ parameter.name }}
 
@@ -191,6 +191,6 @@ Here is an example of how the object can be used.
 
 </div>
 
-{% endif %}
+{%- endif %}
 
-{% endfor %}
+{%- endfor %}

@@ -1,2 +1,4 @@
 Jinja2
-ruamel.yaml==0.16.6
+ruamel.yaml
+Click
+pyfiglet
