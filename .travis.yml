@@ -1,0 +1,18 @@
+language: python
+python:
+- 3.7.4
+install:
+- pip install codecov
+- pip install pytest-cov
+script:
+- pytest
+- coverage run -m pytest
+after_success:
+- codecov
+after_script:
+- cd /src
+deploy:
+  provider: pypi
+  user: GenesisCoast
+after_success:
+  - python scripts/increment_version.py

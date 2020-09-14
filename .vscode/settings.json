@@ -1,4 +1,10 @@
 {
+	"python.testing.pytestEnabled": true,
+    "python.testing.unittestEnabled": false,
+    "python.testing.nosetestsEnabled": false,
+    "python.testing.pytestArgs": [
+        "tests/unit"
+    ],
     "cSpell.words": [
         "Cmdlet",
         "HKLM",

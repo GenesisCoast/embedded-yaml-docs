@@ -22,7 +22,7 @@ The template has the following schema. Objects are documented in additional sub-
 steps:
 - template: {{ _file.full_name }}
   parameters:
-    {% for parameter in _parameters | sort(attribute="name") -%}
+    {% for parameter in _yaml.parameters | sort(attribute="name") -%}
         {{ parameter.name }}: {{ parameter.type }} # {{ parameter.description }}
     {% endfor %}
 ```
@@ -37,12 +37,12 @@ This example shows how to execute the template, with all the possible parameters
 steps:
 - template: {{ _file.full_name }}
   parameters:
-    {% for parameter in _parameters | sort(attribute="name") -%}
+    {% for parameter in _yaml.parameters | sort(attribute="name") -%}
         {{ parameter.name }}: {{ parameter.example }}
     {% endfor %}
 ```
 
-{% if 'resourceTags' in _parameters or 'resourceTagsString' in _parameters %}
+{% if 'resourceTags' in _yaml.parameters or 'resourceTagsString' in _yaml.parameters %}
 
 <div style="background:#e2daf1;padding:16px 16px 0px 16px;border: 1px solid #e2daf1;color:#000">
 
@@ -71,7 +71,7 @@ steps:
 
 - template: {{ _file.full_name }}
   parameters:
-    {% for parameter in _parameters | sort(attribute="name") -%}
+    {% for parameter in _yaml.parameters | sort(attribute="name") -%}
       {% if '$(' not in parameter.default -%}
         {{ parameter.name }}: {{ parameter.example }}
       {% endif %}
@@ -97,7 +97,7 @@ steps:
 
 - template: {{ _file.full_name }}
   parameters:
-    {% for parameter in _parameters | sort(attribute="name") -%}
+    {% for parameter in _yaml.parameters | sort(attribute="name") -%}
       {% if not parameter.default -%}
         {{ parameter.name }}: {{ parameter.example }}
       {% endif %}
@@ -124,14 +124,14 @@ steps:
 
 - template: {{ _file.full_name }}@iac
   parameters:
-    {% for parameter in _parameters | sort(attribute="name") -%}
+    {% for parameter in _yaml.parameters | sort(attribute="name") -%}
       {% if '$(' not in parameter.default -%}
         {{ parameter.name }}: {{ parameter.example }}
       {% endif %}
     {%- endfor %}
 ```
 
-{% if 'resourceTags' in _parameters %}
+{% if 'resourceTags' in _yaml.parameters %}
 
 ---
 
@@ -146,7 +146,7 @@ steps:
 
 - template: {{ _file.full_name }}@iac
   parameters:
-    {% for parameter in _parameters | sort(attribute="name") -%}
+    {% for parameter in _yaml.parameters | sort(attribute="name") -%}
       {% if parameter.default != '' -%}
         {{ parameter.name}}: {{ parameter.example }}
       {% endif %}
@@ -155,7 +155,7 @@ steps:
 
 {% endif %}
 
-{% for parameter in _parameters | sort(attribute="name") -%}
+{% for parameter in _yaml.parameters | sort(attribute="name") -%}
 
   {% if parameter.type == 'object' -%}
 

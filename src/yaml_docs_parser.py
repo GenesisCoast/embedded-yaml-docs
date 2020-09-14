@@ -1,87 +1,27 @@
 import os
-from typing import Iterator, List, Tuple, Final
+from typing import Final, Iterator, List, Tuple
 
-from ruamel.yaml import YAML, safe_load
 from ruamel.yaml.comments import CommentedSeq
-from ruamel.yaml.compat import StringIO
 
-from helpers.string_helper import StringHelper
+from .helpers.yaml_comment_helper import YAMLCommentHelper
+from .wrappers.ruamel_yaml_wrapper import RuamelYAMLWrapper
 
 
-class YAMLDocsParser(YAML):
-    """
-    Custom implementation of the ruamel library.
+class YAMLDocsParser():
     """
 
-
-    def dump_str(self, data: any, **kwargs) -> str:
-        """
-        Return the YAML object as a string.
-
-        Properties:
-            data<any>: The YAML object.
-            options: Options for the YAML dump.
-
-        Returns:
-            The YAML object as a string.
-        """
-        stream = StringIO()
-
-        super().dump(data, stream, **kwargs)
-
-        output_str = stream.getvalue()
-
-        stream.close()
-
-        return output_str
+    """
 
 
-    def load(self, stream) -> any:
+    def __init__(self, yaml_parser: RuamelYAMLWrapper,):
         """
 
         """
-        return super().load(stream)
+        self._yaml_parser = yaml_parser
 
 
-    def load_from_file(self, path: str) -> any:
-        """
 
-        """
-        return self.load(open(path).read())
-
-
-    def format_comment(self, comment: str) -> str:
-        """
-        Formats the comment by removing the YAML comment indicator '#',
-        and removing newlines/blanks spaces from either sides of the string.
-
-        Parameters:
-            comment (str): The comment to format.
-
-        Returns:
-            str: Returns the formatted comment.
-        """
-        comment = StringHelper.remove_prefix(comment, '\n')
-        comment = StringHelper.remove_postfix(comment, '\n')
-        comment = comment.strip()
-        comment = StringHelper.remove_prefix(comment, '# ')
-
-        return comment
-
-
-    def format_comment_lines(self, comment):
-        """
-
-        """
-        lines = list()
-
-        for line in comment.split('\n'):
-            lines.append(self.format_comment(line))
-
-        return '\n'.join(lines)
-
-
-    def extract_comment_from_token(self, token: any) -> Iterator[Tuple[any, str]]:
+    def __get_token_from_comment(self, token: any) -> Iterator[Tuple[any, str]]:
         """
         Extracts the comments from the supplied YAML token, and then yields the comment
         back to the caller (alongside the YAML token).
@@ -102,24 +42,30 @@ class YAMLDocsParser(YAML):
             if comment is not None:
                 if not isinstance(comment, list):
                     # Format the initial comment.
-                    comment_value = self.format_comment(comment.value)
-                    comment_value = self.format_comment_lines(comment_value)
+                    comment_value = YAMLCommentHelper.format_comment(comment.value)
+                    comment_value = YAMLCommentHelper.format_comment_lines(comment_value)
                     comment_block_lines.append(comment_value)
                 else:
                     for sub_comment in comment:
                         if sub_comment is not None:
                             # Format the initial comment.
-                            sub_comment_value = self.format_comment(sub_comment.value)
-                            sub_comment_value = self.format_comment_lines(sub_comment_value)
+                            sub_comment_value = YAMLCommentHelper.format_comment(sub_comment.value)
+                            sub_comment_value = YAMLCommentHelper.format_comment_lines(sub_comment_value)
                             comment_block_lines.append(sub_comment_value)
 
         # Yield the comment
         comment_block = "\n".join(comment_block_lines or list())
 
-        yield safe_load(comment_block)
+        # Return the parsed documentation.
+        yield self._yaml_parser.safe_load(comment_block)
 
 
-    def get_yaml_comments(self, section, parent=None) -> Iterator[Tuple[any, Tuple[any, str]]]:
+    def extract_docs(
+        self,
+        section,
+        parent=None,
+        property_name: str = 'docs'
+    ) -> Iterator[Tuple[any, Tuple[any, str]]]:
         """
         Recursively extracts the YAML comments from the YAML section. For all the YAML properties.
 
@@ -137,7 +83,7 @@ class YAMLDocsParser(YAML):
             supplied section and a Tuple; that contains the corresponding YAML token
             and extracted comment.
         """
-        DOCS_PROPERTY_NAME: Final = 'docs'
+        property_name: Final = 'docs'
 
         # Extract the comments for a dictionary section.
         if isinstance(section, dict):
@@ -152,13 +98,13 @@ class YAMLDocsParser(YAML):
                 val = section[key]
 
                 # Drill down to get the nested comments, for complex values.
-                self.get_yaml_comments(val, section)
+                self.extract_docs(val, section)
 
                 # Check for a comment in the YAML (iteration) object.
                 if isinstance(val, CommentedSeq):
                     # Is there a comment?
                     if val.ca.items:
-                        for comment in self.extract_comment_from_token(val.ca.items[0]):
+                        for comment in self.__get_token_from_comment(val.ca.items[0]):
                             section[key].docs = comment
                     else:
                         section[key].docs = None
@@ -176,24 +122,24 @@ class YAMLDocsParser(YAML):
 
                 # Are there key specific comments?
                 if key in section.ca.items:
-                    for comment in self.extract_comment_from_token(section.ca.items[key]):
+                    for comment in self.__get_token_from_comment(section.ca.items[key]):
                         # Check if we are currently at the root, or the section is a
                         # list of YAML objects (CommentedSeq
                         if parent is None or not isinstance(parent, CommentedSeq):
                             # Add the docs to the 'key: str' pair. The pair is re-initialized
                             # above so that the structure is consistent; 'key: { value: str, docs: {} }'.
                             if isinstance(val, str):
-                                section[key][DOCS_PROPERTY_NAME] = comment
+                                section[key][property_name] = comment
                         else:
                             if not isinstance(val, dict):
-                                section[DOCS_PROPERTY_NAME] = comment
+                                section[property_name] = comment
 
         # Extract the comments for a list section.
         elif isinstance(section, list):
             # Iterate through all the items in the YAML list.
             for index, item in enumerate(section):
                 # Drill down to get the nested comments, for complex values.
-                self.get_yaml_comments(item, section)
+                self.extract_docs(item, section)
 
                 # If item is a string re-initialize it with a new dict to hold
                 # both the value and the docs.
@@ -209,6 +155,6 @@ class YAMLDocsParser(YAML):
 
                 # Are there item specific comments?
                 if index in section.ca.items:
-                    for comment in self.extract_comment_from_token(section.ca.items[index]):
-                        if DOCS_PROPERTY_NAME not in section[index]:
-                            section[index][DOCS_PROPERTY_NAME] = comment
+                    for comment in self.__get_token_from_comment(section.ca.items[index]):
+                        if property_name not in section[index]:
+                            section[index][property_name] = comment

@@ -1,20 +1,22 @@
 from setuptools import setup
 
 setup(
-    name='yaml_ci_docs',
-    version='0.1.7',
+    name='embedded_yaml_docs',
+    version='0.0.1',
     packages=[
-        'yaml_ci_docs',
-        'yaml_ci_docs.wrappers',
+        'embedded_yaml_docs',
+        'embedded_yaml_docs.helpers',
+        'embedded_yaml_docs.models',
+        'embedded_yaml_docs.wrappers'
     ],
     package_dir={
-        'yaml_ci_docs': 'src'
+        'embedded_yaml_docs': 'src'
     },
-    url='https://github.com/GenesisCoast/yaml_ci_docs',
+    url='https://github.com/GenesisCoast/embedded-yaml-docs',
     license='MIT',
     author='Harry Sanderson',
     author_email='harrysanderson@hotmail.co.uk',
-    description='conditions-py is a library that helps write pre- and postcondition validations in a fluent manner, helping improve the readability and reliability of code.',
+    description='embedded_yaml_docs is a CLI used for generating markdown documentation, from your YAML files. This can be useful for documenting YAML files such as CI pipelines.',
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
     classifiers=[
