@@ -1,4 +1,4 @@
-[&#11013; Back to the {{ _file.name }} resource](Templates/master/{{ _file.directory }})
+[&#11013; Back to the {{ _file.name_without_suffix }} resource](Templates/master/{{ _file.parent }})
 
 <br>
 

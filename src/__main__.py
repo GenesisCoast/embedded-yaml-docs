@@ -9,11 +9,11 @@ from pyfiglet import Figlet
 from ruamel.yaml import YAML
 
 
-from wrappers.ruamel_yaml_wrapper import RuamelYAMLWrapper
-from yaml_docs_parser import YAMLDocsParser
-from helpers.string_helper import StringHelper
-from helpers.file_path_helper import FilePathHelper
-from models.file import File
+from .wrappers.ruamel_yaml_wrapper import RuamelYAMLWrapper
+from .yaml_docs_parser import YAMLDocsParser
+from .helpers.string_helper import StringHelper
+from .helpers.file_path_helper import FilePathHelper
+from .models.file import File
 
 
 @click.group()
@@ -54,13 +54,15 @@ def generate(
     # Loop through each of the files and generate the docs.
     for f in files:
         # Get the file details.
-        file = File(f)
+        file = File(f, output_path)
 
         # Load the YAML file.
         yaml = yaml_parser.load_from_file(file.full_name)
 
         # Update the YAML file with docs using ByRef.
         docs_parser.extract_docs(yaml)
+
+        print(f'Generating the docs for "{file.full_name}"')
 
         # Process the template.
         template_object = open(template_path).read()
@@ -77,14 +79,16 @@ def generate(
             folder_structure
         )
 
-        os.makedirs(output_subfolder)
+        os.makedirs(output_subfolder, exist_ok=True)
 
         output_file = output_subfolder = FilePathHelper.join(
             output_subfolder,
-            file.name
+            file.name_without_suffix + '.md'
         )
 
-        with open(output_file, "x") as f:
+        print(f'Outputting the docs "{output_file}"')
+
+        with open(output_file, "w") as f:
             f.write(result)
 
 if __name__ == '__main__':
