@@ -12,7 +12,7 @@ from ruamel.yaml import YAML
 from .wrappers.ruamel_yaml_wrapper import RuamelYAMLWrapper
 from .yaml_docs_parser import YAMLDocsParser
 from .helpers.string_helper import StringHelper
-from .helpers.file_path_helper import FilePathHelper
+from .helpers.file_helper import FileHelper
 from .models.file import File
 
 
@@ -74,21 +74,19 @@ def generate(
 
         folder_structure = file.parent.replace(search_path, '')
 
-        output_subfolder=FilePathHelper.join(
+        output_subfolder=FileHelper.join_paths(
             output_path,
             folder_structure
         )
 
-        os.makedirs(output_subfolder, exist_ok=True)
-
-        output_file = output_subfolder = FilePathHelper.join(
+        output_file = output_subfolder = FileHelper.join_paths(
             output_subfolder,
             file.name_without_suffix + '.md'
         )
 
         print(f'Outputting the docs "{output_file}"')
 
-        with open(output_file, "w") as f:
+        with FileHelper.open_makedirs(output_file, "w") as f:
             f.write(result)
 
 if __name__ == '__main__':

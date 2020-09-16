@@ -1,14 +1,46 @@
 import os
+import contextlib
+from pathlib import Path
 from .string_helper import StringHelper
 
-class FilePathHelper:
+class FileHelper:
     """
 
     """
 
 
     @staticmethod
-    def join(path: str, *paths: list) -> str:
+    @contextlib.contextmanager
+    def open_makedirs(file: str, mode: str):
+        """
+
+        """
+        # Make sure that the files directory exists.
+        os.makedirs(
+            FileHelper.get_file_parent(file),
+            exist_ok=True
+        )
+
+        # Open the file.
+        s = open(file, mode)
+
+        # Yield the file stream.
+        yield s
+
+        # Close the stream once it is finished.
+        s.close()
+
+
+    @staticmethod
+    def get_file_parent(file: str):
+        """
+
+        """
+        return Path(file).parent
+
+
+    @staticmethod
+    def join_paths(path: str, *paths: list) -> str:
         """
 
         """
