@@ -51,7 +51,7 @@ class RuamelYAMLWrapper():
         return self.load(open(path).read())
 
 
-    def safe_loader(self, stream) -> any:
+    def safe_load(self, stream) -> any:
         """
 
         """

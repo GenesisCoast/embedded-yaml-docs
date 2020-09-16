@@ -74,8 +74,8 @@ steps:
     {% for parameter in _yaml.parameters | sort(attribute="name") -%}
       {% if '$(' not in parameter.default -%}
         {{ parameter.name }}: {{ parameter.example }}
-      {% endif %}
-    {%- endfor %}
+      {%- endif %}
+    {% endfor %}
 ```
 
 ---
@@ -100,8 +100,8 @@ steps:
     {% for parameter in _yaml.parameters | sort(attribute="name") -%}
       {% if not parameter.default -%}
         {{ parameter.name }}: {{ parameter.example }}
-      {% endif %}
-    {%- endfor %}
+      {%- endif %}
+    {% endfor %}
 ```
 
 ---
@@ -127,8 +127,8 @@ steps:
     {% for parameter in _yaml.parameters | sort(attribute="name") -%}
       {% if '$(' not in parameter.default -%}
         {{ parameter.name }}: {{ parameter.example }}
-      {% endif %}
-    {%- endfor %}
+      {%- endif %}
+    {% endfor %}
 ```
 
 {% if 'resourceTags' in _yaml.parameters %}

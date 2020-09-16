@@ -1,17 +1,16 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 setup(
     name='embedded_yaml_docs',
     version='0.0.1',
-    packages=[
-        'embedded_yaml_docs',
-        'embedded_yaml_docs.helpers',
-        'embedded_yaml_docs.models',
-        'embedded_yaml_docs.wrappers'
-    ],
+    packages=find_packages(),
     package_dir={
         'embedded_yaml_docs': 'src'
     },
+    entry_points='''
+        [console_scripts]
+        embedded_yaml_docs=src.__main__:main
+    ''',
     url='https://github.com/GenesisCoast/embedded-yaml-docs',
     license='MIT',
     author='Harry Sanderson',

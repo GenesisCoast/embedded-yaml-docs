@@ -1,10 +1,10 @@
 import os
-from typing import Final, Iterator, List, Tuple
+from typing import Iterator, List, Tuple
 
 from ruamel.yaml.comments import CommentedSeq
 
-from .helpers.yaml_comment_helper import YAMLCommentHelper
-from .wrappers.ruamel_yaml_wrapper import RuamelYAMLWrapper
+from helpers.yaml_comment_helper import YAMLCommentHelper
+from wrappers.ruamel_yaml_wrapper import RuamelYAMLWrapper
 
 
 class YAMLDocsParser():

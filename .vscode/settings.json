@@ -18,5 +18,5 @@
         "snapin"
     ],
     "powershell.codeFormatting.addWhitespaceAroundPipe": true,
-    "python.pythonPath": "C:\\Python38\\python.exe"
+    "python.pythonPath": "C:\\Program Files\\Python37\\python.exe"
 }

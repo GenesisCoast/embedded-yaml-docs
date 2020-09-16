@@ -8,17 +8,17 @@ from jinja2 import Template
 from pyfiglet import Figlet
 from ruamel.yaml import YAML
 
-from .models.file import File
-from .wrappers.ruamel_yaml_wrapper import RuamelYAMLWrapper
-from .yaml_docs_parser import YAMLDocsParser
+
+from wrappers.ruamel_yaml_wrapper import RuamelYAMLWrapper
+from yaml_docs_parser import YAMLDocsParser
+from helpers.string_helper import StringHelper
+from helpers.file_path_helper import FilePathHelper
+from models.file import File
 
 
 @click.group()
 @click.version_option("1.0.0")
 def main():
-    """
-    A CVE Search and Lookup CLI
-    """
     f = Figlet(font='slant', justify='')
     print('EMBEDDED...')
     print(f.renderText("YAML Docs"))
@@ -26,19 +26,26 @@ def main():
 
 
 @main.command()
-@click.option('--path', help='Specifies a location to search for YAML files in. Defaults to the current directory')
-@click.option('--search_pattern', help='Specifies a search pattern to use when looking for YAML files.')
+@click.option('--search_path', help='Root folder to search for YAML files in.')
+@click.option('--search_pattern', help='Search pattern to use when looking for YAML files.')
 @click.option('--template_path', help='Path to the Jinja2 template.')
+@click.option('--output_path', help='Folder path to output all the generated files to.')
 @click.option('--recurse', is_flag=True, help='Gets the items in the specified locations and in all child items of the locations.')
-def generate(path, search_pattern, template_path, recurse):
+def generate(
+    search_path,
+    search_pattern,
+    template_path,
+    output_path,
+    recurse
+):
     """
 
     """
     # Do we want to recursively search?
     if recurse:
-        files = list(Path(path).rglob(search_pattern))
+        files = list(Path(search_path).rglob(search_pattern))
     else:
-        files = list(Path(path).glob(search_pattern))
+        files = list(Path(search_path).glob(search_pattern))
 
     # Prepare the libaries.
     yaml_parser = RuamelYAMLWrapper(YAML())
@@ -62,7 +69,23 @@ def generate(path, search_pattern, template_path, recurse):
             _file=file,
             _yaml=yaml
         )
-        print(result)
+
+        folder_structure = file.parent.replace(search_path, '')
+
+        output_subfolder=FilePathHelper.join(
+            output_path,
+            folder_structure
+        )
+
+        os.makedirs(output_subfolder)
+
+        output_file = output_subfolder = FilePathHelper.join(
+            output_subfolder,
+            file.name
+        )
+
+        with open(output_file, "x") as f:
+            f.write(result)
 
 if __name__ == '__main__':
     main()
