@@ -19,7 +19,7 @@ class FileHelper:
 
         """
         if os.path.isfile(path):
-            files = ''.join(path)
+            files = [Path(path)]
         else:
             folder = Path(path)
 

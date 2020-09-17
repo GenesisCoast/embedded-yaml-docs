@@ -95,8 +95,8 @@ def generate(
 
     """
     # Check if the paths are in the correct format.
-    if xor(os.path.isfile(path), os.path.isfile(output_path)):
-        raise 'The "path" and "output_path" must either be both a file path or a directory path.'
+    # if xor(os.path.isfile(path), os.path.isfile(output_path)):
+    #     raise Exception('The "path" and "output_path" must either be both a file path or a directory path.')
 
     # Prepare the libaries.
     yaml_parser = RuamelYAMLWrapper(YAML())
@@ -108,7 +108,7 @@ def generate(
 
     # If there are no files to process throw an error.
     if len(files) == 0:
-        raise 'No files were found to generate docs for. Double check your search pattern.'
+        raise Exception('No files were found to generate docs for. Double check your search pattern.')
 
     # Loop through each of the files and generate the docs.
     for idx, file in enumerate(files):
@@ -124,6 +124,9 @@ def generate(
                 print('There was an error in the YAML file.')
                 raise
 
+            if not isinstance(exclude_comments, list):
+                exclude_comments = [exclude_comments]
+
             # Update the YAML file with docs using ByRef.
             print('Generating the docs...')
             docs_parser.extract_docs(yaml, exclude_comments)
@@ -134,7 +137,7 @@ def generate(
                 template = Template(template_object)
 
                 result = template.render(
-                    _file=file,
+                    _file=fd,
                     _yaml=yaml
                 )
             except Exception as e:
@@ -171,3 +174,13 @@ def generate(
 
 if __name__ == '__main__':
     main()
+
+    # generate(
+    #     path=r'D:\Git Repos\Anglo American\resources\AA.ApplicationGateway\resource-template.yml',
+    #     pattern='*-template.yml',
+    #     template_path=r'D:\Git Repos\Anglo American\common\docs\AA.YAMLDocs\templates\resource-template.j2',
+    #     output_path=r'C:\Users\h.sanderson\Downloads\Output\example.md',
+    #     exclude_comments='TODO:',
+    #     recurse=True,
+    #     overwrite=True
+    # )

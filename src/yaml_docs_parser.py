@@ -8,6 +8,10 @@ from .helpers.string_helper import StringHelper
 from .helpers.yaml_comment_helper import YAMLCommentHelper
 from .wrappers.ruamel_yaml_wrapper import RuamelYAMLWrapper
 
+# from helpers.string_helper import StringHelper
+# from helpers.yaml_comment_helper import YAMLCommentHelper
+# from wrappers.ruamel_yaml_wrapper import RuamelYAMLWrapper
+
 
 class YAMLDocsParser():
     """
@@ -23,7 +27,7 @@ class YAMLDocsParser():
 
 
 
-    def __get_token_from_comment(self, token: any, exclude_comments:list = None) -> Iterator[Tuple[any, str]]:
+    def __get_token_from_comment(self, token: any, exclude_comments: list) -> Iterator[Tuple[any, str]]:
         """
         Extracts the comments from the supplied YAML token, and then yields the comment
         back to the caller (alongside the YAML token).
@@ -62,12 +66,14 @@ class YAMLDocsParser():
         if exclude_comments:
             if not StringHelper.startswith_multi(comment_block, exclude_comments):
                 yield self._yaml_parser.safe_load(comment_block)
+        else:
+            yield self._yaml_parser.safe_load(comment_block)
 
 
     def extract_docs(
         self,
         section: any,
-        exclude_comments: list=None,
+        exclude_comments: list = None,
         parent: any=None,
         property_name: str = 'docs',
     ) -> Iterator[Tuple[any, Tuple[any, str]]]:
@@ -96,7 +102,7 @@ class YAMLDocsParser():
                 val = section[key]
 
                 # Drill down to get the nested comments, for complex values.
-                self.extract_docs(val, parent=section)
+                self.extract_docs(val, parent=section, exclude_comments=exclude_comments)
 
                 # Check for a comment in the YAML (iteration) object.
                 if isinstance(val, CommentedSeq):
@@ -119,7 +125,7 @@ class YAMLDocsParser():
                         }
 
                 # Is there a comments section?
-                if 'ca' in section:
+                if section.ca and section.ca.items:
                     # Are there key specific comments?
                     if key in section.ca.items:
                         for comment in self.__get_token_from_comment(section.ca.items[key], exclude_comments):
@@ -139,7 +145,7 @@ class YAMLDocsParser():
             # Iterate through all the items in the YAML list.
             for index, item in enumerate(section):
                 # Drill down to get the nested comments, for complex values.
-                self.extract_docs(item, parent=section)
+                self.extract_docs(item, parent=section, exclude_comments=exclude_comments)
 
                 # If item is a string re-initialize it with a new dict to hold
                 # both the value and the docs.
