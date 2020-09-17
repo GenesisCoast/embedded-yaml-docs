@@ -4,15 +4,15 @@ with open('requirements.txt', mode='r') as f:
     requirements = f.read().splitlines()
 
 setup(
-    name='embedded_yaml_docs',
+    name='embedded-yaml-docs',
     version='0.0.1',
     packages=find_packages(),
     package_dir={
-        'embedded_yaml_docs': 'src'
+        'embedded-yaml-docs': 'src'
     },
     entry_points='''
         [console_scripts]
-        embedded_yaml_docs=src.__main__:main
+        embedded-yaml-docs=src.__main__:main
     ''',
     url='https://github.com/GenesisCoast/embedded-yaml-docs',
     license='MIT',
