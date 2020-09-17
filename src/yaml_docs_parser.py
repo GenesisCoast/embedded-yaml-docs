@@ -66,9 +66,9 @@ class YAMLDocsParser():
 
     def extract_docs(
         self,
-        section,
-        exclude_comment_prefixes=None,
-        parent=None,
+        section: any,
+        exclude_comments: list=None,
+        parent: any=None,
         property_name: str = 'docs',
     ) -> Iterator[Tuple[any, Tuple[any, str]]]:
         """

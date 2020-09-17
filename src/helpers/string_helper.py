@@ -4,7 +4,7 @@ class StringHelper:
     """
 
     @staticmethod
-    def startswith_multi(text: str, *prefixes: list) -> bool:
+    def startswith_multi(text: str, prefixes: list) -> bool:
         """
 
         """

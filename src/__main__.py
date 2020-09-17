@@ -27,52 +27,69 @@ def main():
 
 @main.command()
 @click.option(
-    '-p'
+    '-p',
     '--path',
+    'path',
     help='Root folder to search for YAML files in.',
     required=True,
     type=str
 )
 @click.option(
+    '-a',
     '--pattern',
+    'pattern',
     help='Search pattern to use when looking for YAML files.',
     required=True,
     type=str
 )
 @click.option(
-    '-t'
-    '--template_path',
+    '-t',
+    '--template-path',
+    'template_path',
     help='Path to the Jinja2 template.',
     required=True,
     type=str
 )
 @click.option(
-    '-o'
-    '--output_path',
+    '-o',
+    '--output-path',
+    'output_path',
     help='Folder path to output all the generated files to.',
     required=True,
     type=str
 )
 @click.option(
+    '-e',
+    '--exclude-comments',
+    'exclude_comments',
+    help='List of comment prefixes to exclude from the generated documentation.',
+    multiple=True,
+    required=False
+)
+@click.option(
+    '-r',
     '--recurse',
+    'recurse',
     help='Gets the items in the specified locations and in all child items of the locations. False by default.',
     is_flag=True,
     required=False
 )
 @click.option(
-    '--exclude_comment_prefixes',
-    help='List of comment prefixes to exclude from the generated documentation.',
-    multiple=True,
-    required=False,
-    type=str
+    '-w',
+    '--overwrite',
+    'overwrite',
+    help='Overwrites any existing documents.',
+    is_flag=True,
+    required=False
 )
 def generate(
     path: str,
     pattern: str,
     template_path: str,
     output_path: str,
-    exclude_comment_prefixes: List[str],
-    recurse: bool= False,
+    exclude_comments: list=None,
+    recurse: bool = False,
+    overwrite: bool = False
 ):
     """
 
@@ -109,7 +126,7 @@ def generate(
 
             # Update the YAML file with docs using ByRef.
             print('Generating the docs...')
-            docs_parser.extract_docs(yaml, exclude_comment_prefixes)
+            docs_parser.extract_docs(yaml, exclude_comments)
 
             # Render the doc file using the template.
             try:
@@ -126,7 +143,7 @@ def generate(
 
             # Output the generated doc.
             try:
-                print(f'Outputting the docs...\n')
+                print(f'Outputting the docs...')
 
                 output_file=FileHelper.join_paths(
                     output_path,
@@ -134,7 +151,11 @@ def generate(
                     fd.name_without_suffix + '.md'
                 )
 
-                with FileHelper.open_makedirs(output_file, "w") as f:
+                mode = 'x'
+                if overwrite:
+                    mode = 'w'
+
+                with FileHelper.open_makedirs(output_file, mode) as f:
                     f.write(result)
 
             except Exception as e:
@@ -144,7 +165,8 @@ def generate(
         except Exception as e:
             print(f'Error at file "{fd.full_name}"')
             print(e)
-            print('\n')
+
+        print('\n')
 
 
 if __name__ == '__main__':
