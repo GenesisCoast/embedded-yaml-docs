@@ -23,7 +23,11 @@ steps:
 - template: {{ _file.full_name }}
   parameters:
     {% for parameter in _yaml.parameters | sort(attribute="name") -%}
-        {{ parameter.name }}: {{ parameter.type }} # {{ parameter.description }}
+        {% if parameter.docs and parameter.docs.Description -%}
+          {{ parameter.name }}: {{ parameter.type }} # {{ parameter.docs.Description | trim() }}
+        {%- else -%}
+          {{ parameter.name }}: {{ parameter.type }}
+        {%- endif %}
     {% endfor %}
 ```
 
@@ -38,7 +42,7 @@ steps:
 - template: {{ _file.full_name }}
   parameters:
     {% for parameter in _yaml.parameters | sort(attribute="name") -%}
-        {{ parameter.name }}: {{ parameter.example }}
+        {{ parameter.name }}: {% if parameter.docs %}{{ parameter.docs.Example }}{% endif %}
     {% endfor %}
 ```
 
@@ -71,11 +75,11 @@ steps:
 
 - template: {{ _file.full_name }}
   parameters:
-    {% for parameter in _yaml.parameters | sort(attribute="name") -%}
-      {% if '$(' not in parameter.default -%}
-        {{ parameter.name }}: {{ parameter.example }}
-      {%- endif %}
-    {% endfor %}
+    {%- for parameter in _yaml.parameters | sort(attribute="name") -%}
+      {%- if parameter.default is string and '$(' not in parameter.default %}
+        {{ parameter.name }}: {% if parameter.docs -%}{{ parameter.docs.Example | trim() }}{%- endif %}
+      {%- endif -%}
+    {%- endfor %}
 ```
 
 ---
@@ -98,9 +102,11 @@ steps:
 - template: {{ _file.full_name }}
   parameters:
     {% for parameter in _yaml.parameters | sort(attribute="name") -%}
-      {% if not parameter.default -%}
-        {{ parameter.name }}: {{ parameter.example }}
-      {%- endif %}
+      {% if parameter.default is string %}
+        {% if not parameter.default -%}
+          {{ parameter.name }}: {% if parameter.docs %}{{ parameter.docs.Example }}{% endif %}
+        {%- endif %}
+      {% endif %}
     {% endfor %}
 ```
 
@@ -125,9 +131,11 @@ steps:
 - template: {{ _file.full_name }}@iac
   parameters:
     {% for parameter in _yaml.parameters | sort(attribute="name") -%}
-      {% if '$(' not in parameter.default -%}
-        {{ parameter.name }}: {{ parameter.example }}
-      {%- endif %}
+      {% if parameter.default is string %}
+        {% if '$(' not in parameter.default -%}
+          {{ parameter.name }}: {% if parameter.docs %}{{ parameter.docs.Example }}{% endif %}
+        {%- endif %}
+      {% endif %}
     {% endfor %}
 ```
 
@@ -147,8 +155,10 @@ steps:
 - template: {{ _file.full_name }}@iac
   parameters:
     {% for parameter in _yaml.parameters | sort(attribute="name") -%}
-      {% if parameter.default != '' -%}
-        {{ parameter.name}}: {{ parameter.example }}
+      {% if parameter.default is string %}
+        {% if parameter.default -%}
+          {{ parameter.name}}: {% if parameter.docs %}{{ parameter.docs.Example }}{% endif %}
+        {% endif %}
       {% endif %}
     {%- endfor %}
 ```
@@ -161,7 +171,14 @@ steps:
 
 ## {{ parameter.name }}
 
-{{ parameter.description }}
+{% if parameter.docs %}
+  {% if parameter.docs.Description %}
+    {{ parameter.docs.Description }}
+  {% else %}
+    {{ parameter.docs }}
+  {% endif %}
+{% endif %}
+
 
 <div style="border:1px solid var(--border-subtle-color);padding:15px 15px 0px 15px">
 
@@ -172,7 +189,7 @@ The following schema is observed.
 ```yml
 {{ parameter.name }}:
   {% for property in parameter._properties -%}
-      {{ property.name }}: {{ property.type }} # {{ property.description }}
+      {{ property.name }}: {{ property.type }} # {{ property.Description }}
   {%- endfor %}
 ```
 
@@ -185,7 +202,7 @@ Here is an example of how the object can be used.
 ```yml
 {{ parameter.name }}:
   {% for property in parameter._properties -%}
-    {{ property.name }}: {{ property.example | trim() }}
+    {{ property.name }}: {% if property.docs %}{{ property.docs.Example | trim() }}{% endif %}
   {%- endfor %}
 ```
 

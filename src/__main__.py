@@ -1,5 +1,6 @@
 import os
 import sys
+from operator import xor
 from pathlib import Path
 from typing import List
 
@@ -7,13 +8,12 @@ import click
 from jinja2 import Template
 from pyfiglet import Figlet
 from ruamel.yaml import YAML
+from ruamel.yaml.parser import ParserError
 
-
+from .helpers.file_helper import FileHelper
+from .models.file_details import FileDetails
 from .wrappers.ruamel_yaml_wrapper import RuamelYAMLWrapper
 from .yaml_docs_parser import YAMLDocsParser
-from .helpers.string_helper import StringHelper
-from .helpers.file_helper import FileHelper
-from .models.file import File
 
 
 @click.group()
@@ -26,68 +26,126 @@ def main():
 
 
 @main.command()
-@click.option('--search_path', help='Root folder to search for YAML files in.')
-@click.option('--search_pattern', help='Search pattern to use when looking for YAML files.')
-@click.option('--template_path', help='Path to the Jinja2 template.')
-@click.option('--output_path', help='Folder path to output all the generated files to.')
-@click.option('--recurse', is_flag=True, help='Gets the items in the specified locations and in all child items of the locations.')
+@click.option(
+    '-p'
+    '--path',
+    help='Root folder to search for YAML files in.',
+    required=True,
+    type=str
+)
+@click.option(
+    '--pattern',
+    help='Search pattern to use when looking for YAML files.',
+    required=True,
+    type=str
+)
+@click.option(
+    '-t'
+    '--template_path',
+    help='Path to the Jinja2 template.',
+    required=True,
+    type=str
+)
+@click.option(
+    '-o'
+    '--output_path',
+    help='Folder path to output all the generated files to.',
+    required=True,
+    type=str
+)
+@click.option(
+    '--recurse',
+    help='Gets the items in the specified locations and in all child items of the locations. False by default.',
+    is_flag=True,
+    required=False
+)
+@click.option(
+    '--exclude_comment_prefixes',
+    help='List of comment prefixes to exclude from the generated documentation.',
+    multiple=True,
+    required=False,
+    type=str
+)
 def generate(
-    search_path,
-    search_pattern,
-    template_path,
-    output_path,
-    recurse
+    path: str,
+    pattern: str,
+    template_path: str,
+    output_path: str,
+    exclude_comment_prefixes: List[str],
+    recurse: bool= False,
 ):
     """
 
     """
-    # Do we want to recursively search?
-    if recurse:
-        files = list(Path(search_path).rglob(search_pattern))
-    else:
-        files = list(Path(search_path).glob(search_pattern))
+    # Check if the paths are in the correct format.
+    if xor(os.path.isfile(path), os.path.isfile(output_path)):
+        raise 'The "path" and "output_path" must either be both a file path or a directory path.'
 
     # Prepare the libaries.
     yaml_parser = RuamelYAMLWrapper(YAML())
     docs_parser = YAMLDocsParser(yaml_parser)
 
+    # Do we want to recursively search?
+    files = FileHelper.get_files(path, pattern, recurse)
+    print(f'Found {len(files)} YAML files to generate the docs for...\n')
+
+    # If there are no files to process throw an error.
+    if len(files) == 0:
+        raise 'No files were found to generate docs for. Double check your search pattern.'
+
     # Loop through each of the files and generate the docs.
-    for f in files:
-        # Get the file details.
-        file = File(f, output_path)
+    for idx, file in enumerate(files):
+        try:
+            # Get the file details.
+            fd = FileDetails(file, output_path, path)
+            print(f'[{idx + 1}/{len(files)}] - {fd.rel_full_name}')
 
-        # Load the YAML file.
-        yaml = yaml_parser.load_from_file(file.full_name)
+            # Load the YAML file.
+            try:
+                yaml = yaml_parser.load_from_file(fd.full_name)
+            except ParserError as e:
+                print('There was an error in the YAML file.')
+                raise
 
-        # Update the YAML file with docs using ByRef.
-        docs_parser.extract_docs(yaml)
+            # Update the YAML file with docs using ByRef.
+            print('Generating the docs...')
+            docs_parser.extract_docs(yaml, exclude_comment_prefixes)
 
-        print(f'Generating the docs for "{file.full_name}"')
+            # Render the doc file using the template.
+            try:
+                template_object = open(template_path).read()
+                template = Template(template_object)
 
-        # Process the template.
-        template_object = open(template_path).read()
-        template = Template(template_object)
-        result = template.render(
-            _file=file,
-            _yaml=yaml
-        )
+                result = template.render(
+                    _file=file,
+                    _yaml=yaml
+                )
+            except Exception as e:
+                print('There was an error with the supplied jinja2 template...')
+                raise
 
-        folder_structure = file.parent.replace(search_path, '')
+            # Output the generated doc.
+            try:
+                print(f'Outputting the docs...\n')
 
-        output_subfolder=FileHelper.join_paths(
-            output_path,
-            folder_structure
-        )
+                output_file=FileHelper.join_paths(
+                    output_path,
+                    fd.rel_parent,
+                    fd.name_without_suffix + '.md'
+                )
 
-        output_file = output_subfolder = FileHelper.join_paths(
-            output_subfolder,
-            file.name_without_suffix + '.md'
-        )
+                with FileHelper.open_makedirs(output_file, "w") as f:
+                    f.write(result)
 
-        print(f'Outputting the docs "{output_file}"')
+            except Exception as e:
+                print('There was an error outputting the doc.')
+                raise
 
-        with FileHelper.open_makedirs(output_file, "w") as f:
-            f.write(result)
+        except Exception as e:
+            print(f'Error at file "{fd.full_name}"')
+            print(e)
+            print('\n')
+
 
 if __name__ == '__main__':
     main()

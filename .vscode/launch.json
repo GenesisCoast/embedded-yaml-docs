@@ -1,0 +1,22 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: Current File (Integrated Terminal)",
+            "type": "python",
+            "console": "integratedTerminal",
+            "program": "${file}",
+            "request": "launch"
+        },
+        {
+            "name": "Python: Install & Run CLI",
+            "type": "python",
+            "console": "externalTerminal",
+            "program": "python 'setup.py' install",
+            "request": "launch"
+        }
+    ]
+}

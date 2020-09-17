@@ -1,5 +1,8 @@
 from setuptools import setup, find_packages
 
+with open('requirements.txt', mode='r') as f:
+    requirements = f.read().splitlines()
+
 setup(
     name='embedded_yaml_docs',
     version='0.0.1',
@@ -13,6 +16,7 @@ setup(
     ''',
     url='https://github.com/GenesisCoast/embedded-yaml-docs',
     license='MIT',
+    install_requires=requirements,
     author='Harry Sanderson',
     author_email='harrysanderson@hotmail.co.uk',
     description='embedded_yaml_docs is a CLI used for generating markdown documentation, from your YAML files. This can be useful for documenting YAML files such as CI pipelines.',

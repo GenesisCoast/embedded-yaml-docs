@@ -1,12 +1,34 @@
-import os
 import contextlib
+import os
+import re
 from pathlib import Path
+from typing import List
+
 from .string_helper import StringHelper
+
 
 class FileHelper:
     """
 
     """
+
+
+    @staticmethod
+    def get_files(path, pattern, recursive=False):
+        """
+
+        """
+        if os.path.isfile(path):
+            files = ''.join(path)
+        else:
+            folder = Path(path)
+
+            if recursive:
+                files = list(folder.rglob(pattern))
+            else:
+                files = list(folder.glob(pattern))
+
+        return files
 
 
     @staticmethod

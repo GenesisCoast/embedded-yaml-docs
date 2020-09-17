@@ -4,6 +4,17 @@ class StringHelper:
     """
 
     @staticmethod
+    def startswith_multi(text: str, *prefixes: list) -> bool:
+        """
+
+        """
+        for prefix in prefixes:
+            if text.startswith(prefix):
+                return True
+        return False
+
+
+    @staticmethod
     def remove_prefix(text: str, prefix: str) -> str:
         """
         Removes the specified prefix from the text.

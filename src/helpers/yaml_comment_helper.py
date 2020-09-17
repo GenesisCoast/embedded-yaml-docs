@@ -1,3 +1,5 @@
+import re
+
 from .string_helper import StringHelper
 
 
@@ -19,9 +21,15 @@ class YAMLCommentHelper:
         Returns:
             str: Returns the formatted comment.
         """
+        # Remove stray newlines.
         comment = StringHelper.remove_prefix(comment, '\n')
         comment = StringHelper.remove_postfix(comment, '\n')
-        comment = comment.strip()
+
+        # Check we are not stripping comment indentation.
+        if comment.strip().startswith('#'):
+            comment = comment.strip()
+
+        # Remove the comment identifier.
         comment = StringHelper.remove_prefix(comment, '# ')
 
         return comment
