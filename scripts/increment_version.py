@@ -4,7 +4,7 @@ import pkg_resources
 
 if __name__ == "__main__":
     version = pkg_resources\
-		.get_distribution("conditions_py")\
+		.get_distribution("embedded-yaml-docs")\
 		.version
 
     split_version = version.split('.')
