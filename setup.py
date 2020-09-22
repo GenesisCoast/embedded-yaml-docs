@@ -5,7 +5,7 @@ with open('requirements.txt', mode='r') as f:
 
 setup(
     name='embedded-yaml-docs',
-    version='0.0.2',
+    version='0.0.4',
     packages=find_packages(),
     package_dir={
         'embedded-yaml-docs': 'src'
