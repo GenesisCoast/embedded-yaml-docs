@@ -1,5 +1,4 @@
 import os
-import sys
 from operator import xor
 from pathlib import Path
 from typing import List
@@ -190,13 +189,3 @@ def generate(
 
 if __name__ == '__main__':
     main()
-
-    # generate(
-    #     path=r'D:\Git Repos\Anglo American\resources\AA.ApplicationGateway\resource-template.yml',
-    #     pattern='*-template.yml',
-    #     template_path=r'D:\Git Repos\Anglo American\common\docs\AA.YAMLDocs\templates\resource-template.j2',
-    #     output_path=r'C:\Users\h.sanderson\Downloads\Output\example.md',
-    #     exclude_comments='TODO:',
-    #     recurse=True,
-    #     overwrite=True
-    # )
