@@ -82,6 +82,14 @@ def main():
     is_flag=True,
     required=False
 )
+@click.option(
+    '-i',
+    '--include-output-suffix',
+    'include_output_suffix',
+    help='Includes the files suffix for the output file.',
+    is_flag=True,
+    required=False
+)
 def generate(
     path: str,
     pattern: str,
@@ -89,7 +97,8 @@ def generate(
     output_path: str,
     exclude_comments: list=None,
     recurse: bool = False,
-    overwrite: bool = False
+    overwrite: bool = False,
+    include_output_suffix: bool = False
 ):
     """
 
@@ -148,11 +157,18 @@ def generate(
             try:
                 print(f'Outputting the docs...')
 
-                output_file=FileHelper.join_paths(
-                    output_path,
-                    fd.rel_parent,
-                    fd.name_without_suffix + '.md'
-                )
+                if include_output_suffix:
+                    output_file=FileHelper.join_paths(
+                        output_path,
+                        fd.rel_parent,
+                        fd.name + '.md'
+                    )
+                else:
+                    output_file=FileHelper.join_paths(
+                        output_path,
+                        fd.rel_parent,
+                        fd.name_without_suffix + '.md'
+                    )
 
                 mode = 'x'
                 if overwrite:
