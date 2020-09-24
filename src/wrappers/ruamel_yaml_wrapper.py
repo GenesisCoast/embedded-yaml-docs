@@ -2,17 +2,10 @@ from ruamel.yaml import YAML, safe_load
 from ruamel.yaml.compat import StringIO
 
 
-class RuamelYAMLWrapper():
+class RuamelYAMLWrapper(YAML):
     """
     Custom implementation of the ruamel library.
     """
-
-
-    def __init__(self, yaml: YAML):
-        """
-
-        """
-        self.yaml = yaml
 
 
     def dump_str(self, data: any, **kwargs) -> str:
@@ -28,7 +21,7 @@ class RuamelYAMLWrapper():
         """
         stream = StringIO()
 
-        self.yaml.dump(data, stream, **kwargs)
+        super().dump(data, stream, **kwargs)
 
         output_str = stream.getvalue()
 
@@ -37,22 +30,27 @@ class RuamelYAMLWrapper():
         return output_str
 
 
-    def load(self, stream) -> any:
+    def load_from_file(self, file: str) -> any:
         """
+        Loads a YAML document from a file, includes any metadata, comments etc...
 
+        Parameters:
+            file (str): The file path to load the YAML from.
+
+        Returns:
+            The parsed YAML document.
         """
-        return self.yaml.load(stream)
-
-
-    def load_from_file(self, path: str) -> any:
-        """
-
-        """
-        return self.load(open(path).read())
+        return super().load(open(file).read())
 
 
     def safe_load(self, stream) -> any:
         """
+        Safely loads the YAML document, excluding any metadata.
 
+        Parameters:
+            stream (any): The YAML stream to parse.
+
+        Returns:
+            The parsed YAML document.
         """
         return safe_load(stream)

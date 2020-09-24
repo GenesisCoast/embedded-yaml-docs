@@ -60,6 +60,7 @@ class YAMLDocsParser():
                             comment_block_lines.append(sub_comment_value)
 
         # Yield the comment
+        comment_block_lines = [line for line in comment_block_lines if not line.startswith('---')]
         comment_block = "\n".join(comment_block_lines or list())
 
         # Return the parsed documentation.

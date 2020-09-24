@@ -6,13 +6,13 @@ from typing import List
 import click
 from jinja2 import Template
 from pyfiglet import Figlet
-from ruamel.yaml import YAML
 from ruamel.yaml.parser import ParserError
 
 from .helpers.file_helper import FileHelper
 from .models.file_details import FileDetails
 from .wrappers.ruamel_yaml_wrapper import RuamelYAMLWrapper
 from .yaml_docs_parser import YAMLDocsParser
+from .wrappers.jinja_environment_wrapper import JinjaEnvironmentWrapper
 
 
 @click.group()
@@ -107,7 +107,7 @@ def generate(
     #     raise Exception('The "path" and "output_path" must either be both a file path or a directory path.')
 
     # Prepare the libaries.
-    yaml_parser = RuamelYAMLWrapper(YAML())
+    yaml_parser = RuamelYAMLWrapper()
     docs_parser = YAMLDocsParser(yaml_parser)
 
     # Do we want to recursively search?
@@ -141,9 +141,8 @@ def generate(
 
             # Render the doc file using the template.
             try:
-                template_object = open(template_path).read()
-                template = Template(template_object)
-
+                environment = JinjaEnvironmentWrapper()
+                template = environment.from_file(template_path)
                 result = template.render(
                     _file=fd,
                     _yaml=yaml

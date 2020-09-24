@@ -9,14 +9,24 @@ from .string_helper import StringHelper
 
 class FileHelper:
     """
-
+    Collection of methods to help with files.
     """
 
 
     @staticmethod
-    def get_files(path, pattern, recursive=False):
+    def get_files(path: str, pattern: str, recursive: bool = False):
         """
+        Get a file or list of files using a path and search pattern.
 
+        Parameters:
+            path (str): The path to search for files in.
+            pattern (str): The search pattern to use when searching for
+                files within a directory.
+            recursive (bool): Flag if the method should search for files in
+                sub-folders or just the root folder.
+
+        Returns:
+            A list of files for the path.
         """
         if os.path.isfile(path):
             files = [Path(path)]
