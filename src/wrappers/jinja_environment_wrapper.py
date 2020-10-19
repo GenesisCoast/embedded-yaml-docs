@@ -24,7 +24,11 @@ class JinjaEnvironmentWrapper(Environment):
         self.filters['selectattr_ifkey'] = JinjaFilters.selectattr_ifkey
         self.filters['selectkey'] = JinjaFilters.selectkey
 
+        self.globals.update(contains_gttimes=JinjaTests.contains_gttimes)
+
         self.tests['contains'] = JinjaTests.contains
+        self.tests['contains_gttimes'] = JinjaTests.contains_gttimes
+        self.tests['contains_times'] = JinjaTests.contains_times
         self.tests['endswith'] = JinjaTests.endswith
         self.tests['not_endswith'] = JinjaTests.not_endswith
         self.tests['not_startswith'] = JinjaTests.not_startswith

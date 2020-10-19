@@ -96,3 +96,36 @@ class JinjaTests:
             True if the value contains the supplied substring.
         """
         return substring in str(value)
+
+
+    @staticmethod
+    def contains_times(value: any, substring: str, times: int) -> bool:
+        """
+        Tests if the the value contains the substring a certain amount of times.
+
+        Parameters:
+            value (str): The value to test.
+            substring (str): Substring to test against.
+            times (int): Number of substrings that should be present in the value.
+
+        Returns:
+            True if value contains the specified substring a certain amount of times.
+        """
+        return str(value).count(substring) == int(times)
+
+
+    @staticmethod
+    def contains_gttimes(value: any, substring: str, greater_than: int) -> bool:
+        """
+        Tests if the number of occurrences of the substring in the value, is greater than
+        the supplied number.
+
+        Parameters:
+            value (str): The value to test.
+            substring (str): Substring to test against.
+            greater_than (int): Number of substring occurrences that should be greater than.
+
+        Returns:
+            True if the number of substring occurrences is greater than the supplied number.
+        """
+        return str(value).strip().count(substring) > int(greater_than)
