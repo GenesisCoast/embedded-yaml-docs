@@ -1,4 +1,5 @@
 import re
+from markupsafe import soft_unicode
 
 
 class JinjaTests:
@@ -20,7 +21,7 @@ class JinjaTests:
         Returns:
             True if the value matches the regex pattern, else false.
         """
-        return re.match(pattern, str(value), flags)
+        return re.match(pattern, soft_unicode(value), flags)
 
 
     @staticmethod
@@ -35,7 +36,7 @@ class JinjaTests:
         Returns:
             True if the value startswith the supplied prefix.
         """
-        return str(value).lower().startswith(prefix)
+        return soft_unicode(value).lower().startswith(prefix)
 
 
     @staticmethod
@@ -50,7 +51,7 @@ class JinjaTests:
         Returns:
             True if the value endswith the supplied postfix.
         """
-        return str(value).lower().endswith(postfix)
+        return soft_unicode(value).lower().endswith(postfix)
 
 
     @staticmethod
@@ -65,7 +66,7 @@ class JinjaTests:
         Returns:
             False if the value startswith the supplied prefix.
         """
-        return str(value).lower().startswith(prefix)
+        return soft_unicode(value).lower().startswith(prefix)
 
 
     @staticmethod
@@ -80,7 +81,7 @@ class JinjaTests:
         Returns:
             False if the value endswith the supplied postfix.
         """
-        return str(value).lower().endswith(postfix)
+        return soft_unicode(value).lower().endswith(postfix)
 
 
     @staticmethod
@@ -95,7 +96,7 @@ class JinjaTests:
         Returns:
             True if the value contains the supplied substring.
         """
-        return substring in str(value)
+        return substring in soft_unicode(value)
 
 
     @staticmethod
@@ -111,7 +112,7 @@ class JinjaTests:
         Returns:
             True if value contains the specified substring a certain amount of times.
         """
-        return str(value).count(substring) == int(times)
+        return soft_unicode(value).count(substring) == int(times)
 
 
     @staticmethod
@@ -128,4 +129,4 @@ class JinjaTests:
         Returns:
             True if the number of substring occurrences is greater than the supplied number.
         """
-        return str(value).strip().count(substring) > int(greater_than)
+        return soft_unicode(value).strip().count(substring) > int(greater_than)

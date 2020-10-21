@@ -1,4 +1,5 @@
 from jinja2.filters import prepare_select_or_reject, contextfilter
+from markupsafe import soft_unicode
 
 
 class JinjaFilters:
@@ -161,3 +162,17 @@ class JinjaFilters:
             kwargs,
             False
         )
+
+
+    @staticmethod
+    def postfix(value: str, postfix: str) -> str:
+        """
+        """
+        return soft_unicode(value) + soft_unicode(postfix)
+
+
+    @staticmethod
+    def prefix(value: str, prefix: str) -> str:
+        """
+        """
+        return soft_unicode(prefix) + soft_unicode(value)

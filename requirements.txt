@@ -2,3 +2,4 @@ click
 Jinja2
 pyfiglet
 ruamel.yaml
+markupsafe

@@ -2,7 +2,8 @@ from jinja2 import Environment, Template
 
 from ..extensions.jinja_filters import JinjaFilters
 from ..extensions.jinja_tests import JinjaTests
-
+from ..extensions.jinja_functions import JinjaFunctions
+from .ruamel_yaml_wrapper import RuamelYAMLWrapper
 
 class JinjaEnvironmentWrapper(Environment):
     """
@@ -19,12 +20,17 @@ class JinjaEnvironmentWrapper(Environment):
         """
         super().__init__(**kwargs)
 
+        yaml = RuamelYAMLWrapper()
+
         self.filters['rejectattr_ifkey'] = JinjaFilters.rejectattr_ifkey
         self.filters['rejectkey'] = JinjaFilters.rejectkey
         self.filters['selectattr_ifkey'] = JinjaFilters.selectattr_ifkey
         self.filters['selectkey'] = JinjaFilters.selectkey
 
-        self.globals.update(contains_gttimes=JinjaTests.contains_gttimes)
+        self.globals.update(contains_gttimes = JinjaTests.contains_gttimes)
+        self.filters['prefix'] = JinjaFilters.prefix
+        self.filters['postfix'] = JinjaFilters.postfix
+        self.filters['toyaml'] = yaml.dump_str
 
         self.tests['contains'] = JinjaTests.contains
         self.tests['contains_gttimes'] = JinjaTests.contains_gttimes
