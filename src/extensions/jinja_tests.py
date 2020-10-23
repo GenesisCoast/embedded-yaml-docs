@@ -100,6 +100,21 @@ class JinjaTests:
 
 
     @staticmethod
+    def not_contains(value: any, substring: str) -> bool:
+        """
+        Tests if the value does not contain a substring.
+
+        Parameters:
+            value (str): The value to test.
+            substring (str): Substring to test against.
+
+        Returns:
+            True if the value contains the supplied substring.
+        """
+        return not JinjaTests.contains(value, substring)
+
+
+    @staticmethod
     def contains_times(value: any, substring: str, times: int) -> bool:
         """
         Tests if the the value contains the substring a certain amount of times.

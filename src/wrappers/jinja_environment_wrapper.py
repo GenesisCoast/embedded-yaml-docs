@@ -1,9 +1,13 @@
-from jinja2 import Environment, Template
+from jinja2 import Environment, Template, filters
+
+from operator import xor
 
 from ..extensions.jinja_filters import JinjaFilters
-from ..extensions.jinja_tests import JinjaTests
 from ..extensions.jinja_functions import JinjaFunctions
+from ..extensions.jinja_tests import JinjaTests
 from .ruamel_yaml_wrapper import RuamelYAMLWrapper
+
+from markupsafe import soft_str
 
 class JinjaEnvironmentWrapper(Environment):
     """
@@ -27,18 +31,21 @@ class JinjaEnvironmentWrapper(Environment):
         self.filters['selectattr_ifkey'] = JinjaFilters.selectattr_ifkey
         self.filters['selectkey'] = JinjaFilters.selectkey
 
-        self.globals.update(contains_gttimes = JinjaTests.contains_gttimes)
+        self.globals.update(hasprop=JinjaFunctions.hasprop)
+        self.globals.update(soft_str=soft_str)
+        self.globals.update(xor=xor)
         self.filters['prefix'] = JinjaFilters.prefix
         self.filters['postfix'] = JinjaFilters.postfix
         self.filters['toyaml'] = yaml.dump_str
 
         self.tests['contains'] = JinjaTests.contains
-        self.tests['contains_gttimes'] = JinjaTests.contains_gttimes
-        self.tests['contains_times'] = JinjaTests.contains_times
+        self.tests['notcontains'] = JinjaTests.not_contains
+        self.tests['containsgttimes'] = JinjaTests.contains_gttimes
+        self.tests['containstimes'] = JinjaTests.contains_times
         self.tests['endswith'] = JinjaTests.endswith
-        self.tests['not_endswith'] = JinjaTests.not_endswith
-        self.tests['not_startswith'] = JinjaTests.not_startswith
-        self.tests['regex_match'] = JinjaTests.regex_match
+        self.tests['notendswith'] = JinjaTests.not_endswith
+        self.tests['notstartswith'] = JinjaTests.not_startswith
+        self.tests['regexmatch'] = JinjaTests.regex_match
         self.tests['startswith'] = JinjaTests.startswith
 
 
