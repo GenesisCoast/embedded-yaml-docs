@@ -14,7 +14,7 @@ class FileHelper:
 
 
     @staticmethod
-    def get_files(path: str, pattern: str, recursive: bool = False):
+    def get_files(path: str, pattern: str, recursive: bool = False) -> list:
         """
         Get a file or list of files using a path and search pattern.
 
@@ -26,7 +26,7 @@ class FileHelper:
                 sub-folders or just the root folder.
 
         Returns:
-            A list of files for the path.
+            list: A list of files for the path.
         """
         if os.path.isfile(path):
             files = [Path(path)]
@@ -45,7 +45,13 @@ class FileHelper:
     @contextlib.contextmanager
     def open_makedirs(file: str, mode: str):
         """
+        Opens the file and double checks that its directory path actually exists.
+        If it doesn't then the relevant directories are created. Useful for creating
+        a new file in a directory(ies) that doe not already exist.
 
+        Parameters:
+            file (str): Filepath to open.
+            mode (str): The mode to open the file using.
         """
         # Make sure that the files directory exists.
         os.makedirs(
@@ -64,9 +70,15 @@ class FileHelper:
 
 
     @staticmethod
-    def get_file_parent(file: str):
+    def get_file_parent(file: str) -> str:
         """
+        Gets the parent folder of the specified file path.
 
+        Parameters:
+            file (str): Path to get the parent for.
+
+        Returns:
+            str: The parent of the specified path.
         """
         return Path(file).parent
 
@@ -74,7 +86,14 @@ class FileHelper:
     @staticmethod
     def join_paths(path: str, *paths: list) -> str:
         """
+        Joins a collection of paths together. That have been formatted.
 
+        Parameters:
+            path (str): The first path to join.
+            paths (list): Collection of paths to join together.
+
+        Returns:
+            str: The paths combined together.
         """
         path = StringHelper.remove_postfix(path, '/')
         path = StringHelper.remove_postfix(path, '\\')

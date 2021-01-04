@@ -1,9 +1,14 @@
 from markupsafe import soft_str
 
-class JinjaFunctions:
+
+class CustomJinjaFunctions:
+    """
+    Collection of custom Jinja Functions.
+    """
+
 
     @staticmethod
-    def hasprop(obj: any, property: str) -> bool:
+    def do_hasprop(obj: any, property: str) -> bool:
         """
         Checks if the object has a specific property.
         """

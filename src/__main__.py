@@ -1,4 +1,5 @@
 import os
+import traceback
 from operator import xor
 from pathlib import Path
 from typing import List
@@ -66,6 +67,13 @@ def main():
     required=False
 )
 @click.option(
+    '--exit',
+    'exit_flag',
+    help='Throw a terminating error if one of the templates fail.',
+    is_flag=True,
+    required=False
+)
+@click.option(
     '-r',
     '--recurse',
     'recurse',
@@ -96,6 +104,7 @@ def generate(
     output_path: str,
     exclude_comments: list=None,
     recurse: bool = False,
+    exit_flag: bool = False,
     overwrite: bool = False,
     include_output_suffix: bool = False
 ):
@@ -105,6 +114,9 @@ def generate(
     # Check if the paths are in the correct format.
     # if xor(os.path.isfile(path), os.path.isfile(output_path)):
     #     raise Exception('The "path" and "output_path" must either be both a file path or a directory path.')
+
+    # Variable to identify if one of the templates has failed.
+    template_error = False
 
     # Prepare the libaries.
     yaml_parser = RuamelYAMLWrapper()
@@ -125,9 +137,13 @@ def generate(
             fd = FileDetails(file, output_path, path)
             print(f'[{idx + 1}/{len(files)}] - {fd.rel_full_name}')
 
+            # Read the contents of the file.
+            with open(file) as f:
+                contents = f.read()
+
             # Load the YAML file.
             try:
-                yaml = yaml_parser.load_from_file(fd.full_name)
+                yaml = yaml_parser.load(contents)
             except ParserError as e:
                 print('There was an error in the YAML file.')
                 raise
@@ -145,6 +161,7 @@ def generate(
                 template = environment.from_file(template_path)
                 result = template.render(
                     _file=fd,
+                    _contents=contents,
                     _yaml=yaml
                 )
             except Exception as e:
@@ -182,9 +199,13 @@ def generate(
         except Exception as e:
             print(f'Error at file "{fd.full_name}"')
             print(e)
+            print(traceback.format_exc())
+            template_error = True
 
         print('\n')
 
+    if exit_flag and template_error:
+        raise Exception('One of the templates failed to generate')
 
 if __name__ == '__main__':
     main()

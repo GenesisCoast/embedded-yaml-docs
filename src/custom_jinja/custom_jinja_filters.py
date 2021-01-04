@@ -1,12 +1,12 @@
 from jinja2.filters import prepare_select_or_reject, contextfilter
-from markupsafe import soft_unicode
+from markupsafe import soft_str
+from os.path import join, abspath
 
 
-class JinjaFilters:
+class CustomJinjaFilters:
     """
     Collection of custom Jinja Filters.
     """
-
 
     @staticmethod
     def __select_or_reject_attr_if_present_key(args, kwargs, modfunc, lookup_attr):
@@ -26,7 +26,8 @@ class JinjaFilters:
             List of items that either match the test function or do not contain the
             specified attribute.
         """
-        seq, func = prepare_select_or_reject(args, kwargs, modfunc, lookup_attr)
+        seq, func = prepare_select_or_reject(
+            args, kwargs, modfunc, lookup_attr)
         if seq:
             for item in seq:
                 if args[2] in item.keys():
@@ -34,7 +35,6 @@ class JinjaFilters:
                         yield item
                 else:
                     yield item
-
 
     @staticmethod
     def __select_or_reject_key(args, kwargs, inverse):
@@ -61,10 +61,9 @@ class JinjaFilters:
                     if args[2] in item.keys():
                         yield item
 
-
     @staticmethod
     @contextfilter
-    def rejectattr_ifkey(*args, **kwargs):
+    def do_rejectattr_ifkey(*args, **kwargs):
         """
         Iterates through the collection and only rejects the item if the attribute
         both exists and it matches the supplied test.
@@ -80,17 +79,16 @@ class JinjaFilters:
             List of items that do not match the test function or do not contain the
             specified attribute.
         """
-        return JinjaFilters.__select_or_reject_attr_if_present_key(
+        return CustomJinjaFilters.__select_or_reject_attr_if_present_key(
             args,
             kwargs,
             lambda x: not x,
             True
         )
 
-
     @staticmethod
     @contextfilter
-    def selectattr_ifkey(*args, **kwargs):
+    def do_selectattr_ifkey(*args, **kwargs):
         """
         Iterates through the collection and only selects the item if the attribute
         both exists and it matches the supplied test.
@@ -106,17 +104,16 @@ class JinjaFilters:
             List of items that match the test function or do not contain the
             specified attribute.
         """
-        return JinjaFilters.__select_or_reject_attr_if_present_key(
+        return CustomJinjaFilters.__select_or_reject_attr_if_present_key(
             args,
             kwargs,
             lambda x: x,
             True
         )
 
-
     @staticmethod
     @contextfilter
-    def rejectkey(*args, **kwargs):
+    def do_rejectkey(*args, **kwargs):
         """
         Iterates through the collection and rejects the item it it contains the specified key.
 
@@ -132,16 +129,15 @@ class JinjaFilters:
         Returns:
             List of items that either does not contain the specified key.
         """
-        return JinjaFilters.__select_or_reject_key(
+        return CustomJinjaFilters.__select_or_reject_key(
             args,
             kwargs,
             True
         )
 
-
     @staticmethod
     @contextfilter
-    def selectkey(*args, **kwargs):
+    def do_selectkey(*args, **kwargs):
         """
         Iterates through the collection and selects the item it it contains the specified key.
 
@@ -157,22 +153,57 @@ class JinjaFilters:
         Returns:
             List of items that contain the specified key.
         """
-        return JinjaFilters.__select_or_reject_key(
+        return CustomJinjaFilters.__select_or_reject_key(
             args,
             kwargs,
             False
         )
 
+    @staticmethod
+    def do_postfix(value: str, postfix: str) -> str:
+        """
+        Adds a postfix to the supplied value.
+
+        Parameters:
+            value (str): Value to add the postfix to.
+            postfix (str): Postfix to add to the string.
+
+        Returns:
+            str: The value with the postfix added.
+        """
+        return soft_str(value) + soft_str(postfix)
 
     @staticmethod
-    def postfix(value: str, postfix: str) -> str:
+    def do_prefix(value: str, prefix: str) -> str:
         """
-        """
-        return soft_unicode(value) + soft_unicode(postfix)
+        Adds a prefix to the supplied value.
 
+        Parameters:
+            value (str): Value to add the prefix to.
+            prefix (str): Prefix to add to the string.
+
+        Returns:
+            str: The value with the prefix added.
+        """
+        return soft_str(prefix) + soft_str(value)
 
     @staticmethod
-    def prefix(value: str, prefix: str) -> str:
+    def do_relativepath(path: str, *paths: list): str:
         """
+
         """
-        return soft_unicode(prefix) + soft_unicode(value)
+        # Adjust the path to have the correct slashes.
+        path = path.replace('/', '\\')
+        paths = [p.replace('/', '\\') for p in paths]
+
+        # Join the paths together.
+        relative = join(path, paths)
+
+        # Resolve the relative folder.
+        resolved = abspath(relative)
+
+        # Remove the implied script root.
+        if not resolved.startswith(path):
+            resolved.replace(resolved.split(path)[0], '')
+
+        return resolved

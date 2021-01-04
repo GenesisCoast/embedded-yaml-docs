@@ -21,6 +21,7 @@ def test_startswith_multi_returns_false_when_string_does_not_startswith(text: st
     # Assert
     assert result == False
 
+
 @pytest.mark.parametrize(
     'text,prefixes',
     [

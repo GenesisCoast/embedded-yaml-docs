@@ -3,3 +3,4 @@ Jinja2
 pyfiglet
 ruamel.yaml
 markupsafe
+conditions-py

@@ -6,7 +6,14 @@ class StringHelper:
     @staticmethod
     def startswith_multi(text: str, prefixes: list) -> bool:
         """
+        Checks if the text starts with any of the specified prefixes.
 
+        Parameters:
+            text (str): The string to check.
+            prefixes (list): List of prefixes to check the text against.
+
+        Returns:
+            bool: True if the text startswith all the specified prefixes.
         """
         for prefix in prefixes:
             if text.startswith(prefix):
@@ -32,7 +39,7 @@ class StringHelper:
 
 
     @staticmethod
-    def remove_postfix(text, postfix):
+    def remove_postfix(text: str, postfix: str):
         """
         Removes the specified postfix from the text.
 

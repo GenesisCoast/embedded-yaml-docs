@@ -1,9 +1,11 @@
 import os
 import re
+import sys
 from typing import Iterator, List, Tuple
 
 from ruamel.yaml.comments import CommentedSeq
 
+from .errors.comment_parser_error import CommentParserError
 from .helpers.string_helper import StringHelper
 from .helpers.yaml_comment_helper import YAMLCommentHelper
 from .wrappers.ruamel_yaml_wrapper import RuamelYAMLWrapper
@@ -64,11 +66,18 @@ class YAMLDocsParser():
         comment_block = "\n".join(comment_block_lines or list())
 
         # Return the parsed documentation.
-        if exclude_comments:
-            if not StringHelper.startswith_multi(comment_block, exclude_comments):
+        try:
+            if exclude_comments:
+                if not StringHelper.startswith_multi(comment_block, exclude_comments):
+                    yield self._yaml_parser.safe_load(comment_block)
+            else:
                 yield self._yaml_parser.safe_load(comment_block)
-        else:
-            yield self._yaml_parser.safe_load(comment_block)
+        except Exception as message:
+            raise CommentParserError(
+                token,
+                comment_block,
+                message
+            ), None, sys.exc_info()[2]
 
 
     def extract_docs(
