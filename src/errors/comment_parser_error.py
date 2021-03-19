@@ -3,7 +3,7 @@ class CommentParserError(Exception):
     Custom class for a comment parser error.
     """
 
-    def __init__(token, comment_block, message):
+    def __init__(self, token, comment_block, message):
         """
         Constructor for the exception including all the details.
         """

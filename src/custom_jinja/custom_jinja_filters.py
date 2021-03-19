@@ -188,7 +188,7 @@ class CustomJinjaFilters:
         return soft_str(prefix) + soft_str(value)
 
     @staticmethod
-    def do_relativepath(path: str, *paths: list): str:
+    def do_relativepath(path: str, *paths: list) -> str:
         """
 
         """

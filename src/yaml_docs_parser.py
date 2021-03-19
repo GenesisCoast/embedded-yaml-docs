@@ -72,12 +72,12 @@ class YAMLDocsParser():
                     yield self._yaml_parser.safe_load(comment_block)
             else:
                 yield self._yaml_parser.safe_load(comment_block)
-        except Exception as message:
+        except Exception as e:
             raise CommentParserError(
                 token,
                 comment_block,
-                message
-            ), None, sys.exc_info()[2]
+                e
+            ) from e
 
 
     def extract_docs(
