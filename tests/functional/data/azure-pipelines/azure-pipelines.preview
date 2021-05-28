@@ -1,0 +1,52 @@
+_file: !FileDetails
+  name: azure-pipelines.yml
+  name_without_suffix: azure-pipelines
+  parent: D:\Git Repos\GitHub\embedded-yaml-docs\tests\functional\data\azure-pipelines
+  extension: .yml
+  full_name: D:\Git Repos\GitHub\embedded-yaml-docs\tests\functional\data\azure-pipelines\azure-pipelines.yml
+  rel_parent: azure-pipelines
+  rel_full_name: azure-pipelines\azure-pipelines.yml
+_contents: "# ---\n# Description:\n#   This pipeline is used to show an example of\
+  \ how you can print an output to the console.\n# ---\n\nparameters:\n- name: outputText\n\
+  \  type: string\n  # Description:\n  #   Text to output to the console.\n  # Example:\n\
+  \  #   Hello world.\n\nvariables:\n  System.Debug: true\n  # Description:\n  # \
+  \  Variable used to enable all the debug logging for the Azure DevOps pipelines.\n\
+  \nsteps:\n- task: Bash@3\n  displayName: 'docs: Install the dependencies for \"\
+  embedded-yaml-docs\"'\n  inputs:\n    script: |\n      echo ${{ parameters.outputText\
+  \ }}\n    targetType: inline"
+_yaml:
+# ---
+# Description:
+#   This pipeline is used to show an example of how you can print an output to the console.
+# ---
+
+  parameters:
+  - name: outputText
+    type: string
+  # Description:
+  #   Text to output to the console.
+  # Example:
+  #   Hello world.
+
+    docs:
+      Description: Text to output to the console.
+      Example: Hello world.
+  variables:
+    System.Debug: true
+  # Description:
+  #   Variable used to enable all the debug logging for the Azure DevOps pipelines.
+
+  steps:
+  - task: Bash@3
+    displayName: 'docs: Install the dependencies for "embedded-yaml-docs"'
+    inputs:
+      script:
+        name: script
+        value: |
+          echo ${{ parameters.outputText }}
+      targetType:
+        name: targetType
+        value: inline
+  docs:
+    Description: This pipeline is used to show an example of how you can print an
+      output to the console.

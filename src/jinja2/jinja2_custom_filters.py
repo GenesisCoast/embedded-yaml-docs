@@ -3,10 +3,11 @@ from markupsafe import soft_str
 from os.path import join, abspath
 
 
-class CustomJinjaFilters:
+class Jinja2CustomFilters:
     """
     Collection of custom Jinja Filters.
     """
+
 
     @staticmethod
     def __select_or_reject_attr_if_present_key(args, kwargs, modfunc, lookup_attr):
@@ -36,6 +37,7 @@ class CustomJinjaFilters:
                 else:
                     yield item
 
+
     @staticmethod
     def __select_or_reject_key(args, kwargs, inverse):
         """
@@ -61,6 +63,7 @@ class CustomJinjaFilters:
                     if args[2] in item.keys():
                         yield item
 
+
     @staticmethod
     @contextfilter
     def do_rejectattr_ifkey(*args, **kwargs):
@@ -79,12 +82,13 @@ class CustomJinjaFilters:
             List of items that do not match the test function or do not contain the
             specified attribute.
         """
-        return CustomJinjaFilters.__select_or_reject_attr_if_present_key(
+        return Jinja2CustomFilters.__select_or_reject_attr_if_present_key(
             args,
             kwargs,
             lambda x: not x,
             True
         )
+
 
     @staticmethod
     @contextfilter
@@ -104,12 +108,13 @@ class CustomJinjaFilters:
             List of items that match the test function or do not contain the
             specified attribute.
         """
-        return CustomJinjaFilters.__select_or_reject_attr_if_present_key(
+        return Jinja2CustomFilters.__select_or_reject_attr_if_present_key(
             args,
             kwargs,
             lambda x: x,
             True
         )
+
 
     @staticmethod
     @contextfilter
@@ -129,11 +134,12 @@ class CustomJinjaFilters:
         Returns:
             List of items that either does not contain the specified key.
         """
-        return CustomJinjaFilters.__select_or_reject_key(
+        return Jinja2CustomFilters.__select_or_reject_key(
             args,
             kwargs,
             True
         )
+
 
     @staticmethod
     @contextfilter
@@ -153,11 +159,12 @@ class CustomJinjaFilters:
         Returns:
             List of items that contain the specified key.
         """
-        return CustomJinjaFilters.__select_or_reject_key(
+        return Jinja2CustomFilters.__select_or_reject_key(
             args,
             kwargs,
             False
         )
+
 
     @staticmethod
     def do_postfix(value: str, postfix: str) -> str:
@@ -173,6 +180,7 @@ class CustomJinjaFilters:
         """
         return soft_str(value) + soft_str(postfix)
 
+
     @staticmethod
     def do_prefix(value: str, prefix: str) -> str:
         """
@@ -186,24 +194,3 @@ class CustomJinjaFilters:
             str: The value with the prefix added.
         """
         return soft_str(prefix) + soft_str(value)
-
-    @staticmethod
-    def do_relativepath(path: str, *paths: list) -> str:
-        """
-
-        """
-        # Adjust the path to have the correct slashes.
-        path = path.replace('/', '\\')
-        paths = [p.replace('/', '\\') for p in paths]
-
-        # Join the paths together.
-        relative = join(path, paths)
-
-        # Resolve the relative folder.
-        resolved = abspath(relative)
-
-        # Remove the implied script root.
-        if not resolved.startswith(path):
-            resolved.replace(resolved.split(path)[0], '')
-
-        return resolved

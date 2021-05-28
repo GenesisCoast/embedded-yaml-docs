@@ -1,0 +1,56 @@
+<div style="background:#FFC7CE;padding:16px 16px 0px 16px;border: 1px solid #9C2D55;">
+
+<span style="color:#9C2D55;text-align:center">
+
+This document is auto-generated from the source code. Any changes made directly to this document, will be overwritten.
+
+</span>
+
+</div>
+
+<br>
+
+[[_TOC_]]
+
+# Introduction
+
+{{ _yaml.docs.Description }}
+
+# Parameters
+
+Below is a list of the parameters used for the template. Any optional or auto-generated arguments are specified in the schema.
+
+<div style="border:1px solid var(--border-subtle-color);padding:15px 15px 0px 15px">
+
+<span style="color:var(--text-secondary-color)"><strong>Schema (YAML):</strong></span>
+
+The template has the following YAML schema. Objects are documented in additional sub-sections below. The proceeding section displays the schema in a table format for easier reading.
+
+```yml
+steps:
+- template: {{ _file.rel_full_name }}
+  parameters:
+    {% for parameter in _yaml.parameters | sort(attribute="name") -%}
+      {% if parameter.docs and parameter.docs.Description -%}
+        {{ parameter.name }}: {{ parameter.type }} # {{ parameter.docs.Description | trim() }}
+      {%- else -%}
+        {{ parameter.name }}: {{ parameter.type }}
+      {%- endif %}
+    {% endfor %}
+```
+
+---
+
+<span style="color:var(--text-secondary-color)"><strong>Schema (Table):</strong></span>
+
+The template has the following schema. Details on how the schema looks in YAML can be found above. Objects are documented in additional sub-sections below.
+
+| Parameter Name | Type | Default | Required | Description |
+|----------------|:----:|---------|----------|-------------|
+{% for parameter in _yaml.parameters | sort(attribute="name") -%}
+  {% if parameter.docs and parameter.docs.Description -%}
+    | {{ parameter.name }} | `{{ parameter.type }}` | {% if parameter.default and parameter.default is notcontains('$(') %}{{ parameter.default | default('') }}{% endif %} | {{ xor(parameter.default is startswith('$('), not hasprop(parameter, 'default')) }} | {{ parameter.docs.Description | trim() }} |
+  {%- else -%}
+    | {{ parameter.name }} | `{{ parameter.type }}` | {% if parameter.default and parameter.default is notcontains('$(') %}{{ parameter.default | default('') }}{% endif %} | {{ xor(parameter.default is startswith('$('), not hasprop(parameter, 'default')) }} | |
+  {%- endif %}
+{% endfor %}

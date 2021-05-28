@@ -1,0 +1,25 @@
+# ---
+# Description:
+#   This pipeline is used to show an example of how you can print an output to the console.
+# ---
+
+parameters:
+- name: outputText
+  type: string
+  # Description:
+  #   Text to output to the console.
+  # Example:
+  #   Hello world.
+
+variables:
+  System.Debug: true
+  # Description:
+  #   Variable used to enable all the debug logging for the Azure DevOps pipelines.
+
+steps:
+- task: Bash@3
+  displayName: 'docs: Install the dependencies for "embedded-yaml-docs"'
+  inputs:
+    script: |
+      echo ${{ parameters.outputText }}
+    targetType: inline

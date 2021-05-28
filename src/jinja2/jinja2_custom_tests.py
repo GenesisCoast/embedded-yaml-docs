@@ -2,7 +2,7 @@ import re
 from markupsafe import soft_unicode
 
 
-class CustomJinjaTests:
+class Jinja2CustomTests:
     """
     Collection of custom Jinja Tests.
     """
@@ -83,7 +83,7 @@ class CustomJinjaTests:
         Returns:
             False if the value contains the supplied substring.
         """
-        return not CustomJinjaTests.do_contains(value, substring)
+        return not Jinja2CustomTests.do_contains(value, substring)
 
 
     @staticmethod
@@ -98,7 +98,7 @@ class CustomJinjaTests:
         Returns:
             False if the value endswith the supplied postfix.
         """
-        return not CustomJinjaTests.do_endswith(value, postfix)
+        return not Jinja2CustomTests.do_endswith(value, postfix)
 
 
     @staticmethod
@@ -113,7 +113,7 @@ class CustomJinjaTests:
         Returns:
             False if the value startswith the supplied prefix.
         """
-        return CustomJinjaTests.do_startswith(value, prefix)
+        return Jinja2CustomTests.do_startswith(value, prefix)
 
 
     @staticmethod
@@ -129,7 +129,7 @@ class CustomJinjaTests:
         Returns:
             False if the value matches the regex pattern, else false.
         """
-        return not CustomJinjaTests.do_regexmatch(value, pattern, flags)
+        return not Jinja2CustomTests.do_regexmatch(value, pattern, flags)
 
 
     @staticmethod

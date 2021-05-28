@@ -43,7 +43,7 @@ class RuamelYAMLWrapper(YAML):
         return super().load(open(file).read())
 
 
-    def safe_load(self, stream) -> any:
+    def safe_load(self, stream: any) -> any:
         """
         Safely loads the YAML document, excluding any metadata.
 

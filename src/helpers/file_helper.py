@@ -108,3 +108,33 @@ class FileHelper:
             paths[index] = StringHelper.remove_postfix(paths[index], '\\')
 
         return os.path.join(path, *paths)
+
+
+    @staticmethod
+    def get_path_without_extension(path: str) -> str:
+        """
+        Returns the file path without the extension.
+
+        Parameters:
+            path (str): The file path to get without the extension.
+
+        Returns:
+            (str): Returns the file name without the extension.
+        """
+        return os.path.splitext(path)[0]
+
+
+    @staticmethod
+    def exchange_file_extension(path: str, extension: str) -> str:
+        """
+        Changes the extension for the specified file path.
+
+        Parameters:
+            path (str): The file path to change the extension of.
+            extension (str): The new extension to change the existing
+                file extension for. Must include the '.' prefix.
+
+        Returns:
+            (str): Returns the file path with the new extension.
+        """
+        return FileHelper.get_path_without_extension(path) + extension

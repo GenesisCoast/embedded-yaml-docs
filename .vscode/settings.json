@@ -9,13 +9,16 @@
         "Cmdlet",
         "HKLM",
         "Mkdir",
+        "exclprefix",
         "pscmdlet",
         "psobject",
+        "pytest",
         "recurse",
         "ruamel",
         "scriptblock",
         "securestring",
-        "snapin"
+        "snapin",
+        "testf"
     ],
     "powershell.codeFormatting.addWhitespaceAroundPipe": true,
     "python.pythonPath": "C:\\Users\\h.sanderson\\AppData\\Local\\Programs\\Python\\Python38-32\\python.exe",

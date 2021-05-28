@@ -1,5 +1,3 @@
-import re
-
 from .string_helper import StringHelper
 
 
@@ -38,7 +36,13 @@ class YAMLCommentHelper:
     @staticmethod
     def format_comment_lines(comment):
         """
+        Formats all the lines for the comment.
 
+        Parameters:
+            comment (str): The comment lines to format.
+
+        Returns:
+            str: Returns the formatted content.
         """
         lines = list()
 

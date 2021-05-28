@@ -5,14 +5,14 @@ with open('requirements.txt', mode='r') as f:
 
 setup(
     name='embedded-yaml-docs',
-    version='0.0.14',
+    version='1.0.0',
     packages=find_packages(),
     package_dir={
         'embedded-yaml-docs': 'src'
     },
     entry_points='''
         [console_scripts]
-        embedded-yaml-docs=src.__main__:main
+        embedded-yaml-docs=src.cli:cli
     ''',
     url='https://github.com/GenesisCoast/embedded-yaml-docs',
     license='MIT',

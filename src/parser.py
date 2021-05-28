@@ -10,20 +10,19 @@ from .helpers.string_helper import StringHelper
 from .helpers.yaml_comment_helper import YAMLCommentHelper
 from .wrappers.ruamel_yaml_wrapper import RuamelYAMLWrapper
 
-# from helpers.string_helper import StringHelper
-# from helpers.yaml_comment_helper import YAMLCommentHelper
-# from wrappers.ruamel_yaml_wrapper import RuamelYAMLWrapper
-
 
 class YAMLDocsParser():
     """
-
+    Parser for extracting the documentation from the YAML comments.
     """
 
 
     def __init__(self, yaml_parser: RuamelYAMLWrapper,):
         """
+        Constructor for passing the dependencies.
 
+        Parameters:
+            yaml_parser (RuamelYAMLWrapper): Instance of the YAML parser, to inject.
         """
         self._yaml_parser = yaml_parser
 
