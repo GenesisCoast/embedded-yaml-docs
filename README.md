@@ -49,9 +49,9 @@ The following options can be supplied for the `generate file` command.
 
 | Option | Required | Description |
 |--------|----------|-------------|
-| `-f, --file` | True | File path to the YAML file; to generate the documenation for. |
+| `-f, --file` | True | File path to the YAML file; to generate the documentation for. |
 | `-t, --template` | True | File path to the Jinja2 template thats used in the documentation generation. |
-| `-o, --output` | False | File path specifying the location and name of the documentation file that will be outputted. If no value is supplied then the file path supplied using `-f, --file` will be used, with the extension changed from `.yml` to `.md`. |
+| `-o, --output` | False | File path specifying the location and name of the documentation file that will be outputted. If no value is supplied, then the file path supplied using `-f, --file` will be used. Alongwith the extension changed from `.yml` to `.md`. |
 | `-pre, --exclprefix` | False | List of comment prefixes to search for when generating the documentation. If a prefix is matched, then the corresponding documentation is excluded. To specify multiple prefixes to be excluded repeat the option identifier `-pre, --exclprefix`. |
 | `-r, --root` | False | The root folder of your file structure. This is used to calculate relative paths for the YAML files. You could use this to pass your respoitory root meaning that the YAML files, will be relative to the repository. Rather than your file system. |
 | `x, --exit` | False | Flag with forces the CLI to stop execution after an error. If this flag is not passed then the CLI will continue executing until it has finished processing all the files. |
@@ -96,20 +96,12 @@ The following options can be supplied for the `generate folder` command.
 
 | Option | Required | Description |
 |--------|----------|-------------|
-
-| `-f, --file` | True | File path to the YAML file; to generate the documenation for. |
-
-| `-t, --template` | True | File path to the Jinja2 template thats used in the documentation generation. |
-
-| `-o, --output` | False | File path specifying the location and name of the documentation file that will be outputted. If no value is supplied then the file path supplied using `-f, --file` will be used, with the extension changed from `.yml` to `.md`. |
-
-| `-pre, --exclprefix` | False | List of comment prefixes to search for when generating the documentation. If a prefix is matched, then the corresponding documentation is excluded. To specify multiple prefixes to be excluded repeat the option identifier `-pre, --exclprefix`. |
-
+| `-f, --file` | True | File path to the YAML file; to generate the documentation preview for. |
+| `-o, --output` | False | File path specifying the location and name of the documentation preview file that will be outputted. If no value is supplied, then the file path supplied using `-f, --file` will be used. Alongwith the extension changed from `.yml` to `.preview`. |
+| `-pre, --exclprefix` | False | List of comment prefixes to search for when generating the documentation preview. If a prefix is matched, then the corresponding documentation is excluded. To specify multiple prefixes to be excluded repeat the option identifier `-pre, --exclprefix`. |
 | `-r, --root` | False | The root folder of your file structure. This is used to calculate relative paths for the YAML files. You could use this to pass your respoitory root meaning that the YAML files, will be relative to the repository. Rather than your file system. |
-
 | `x, --exit` | False | Flag with forces the CLI to stop execution after an error. If this flag is not passed then the CLI will continue executing until it has finished processing all the files. |
-
-| `-w, --overwrite` | False | Flag to overwwrite any existing documentation files. |
+| `-w, --overwrite` | False | Flag to overwwrite any existing documentation preview files. |
 
 ### Folder
 
@@ -124,11 +116,10 @@ The following options can be supplied for the `generate folder` command.
 | Option | Required | Description |
 |--------|----------|-------------|
 | `-f, --folder` | True | Directory to search for YAML files in. |
-| `-e, --extension` | False | File type extension to use for the output files that are generated for the documentation. Defaults to `.md`. |
-| `-o, --output` | False | Directory to output all the documentation files to. Defaults to the directory supplied by `-f, --folder`. |
+| `-o, --output` | False | Directory to output all the documentation preview files to. Defaults to the directory supplied by `-f, --folder`. |
 | `-s, --search` | False | Wildcard pattern to use when searching for YAML files in the specified folder. Defaults to `*.yml`. |
 | `-pre, --exclprefix` | False | List of comment prefixes to search for when generating the documentation. If a prefix is matched, then the corresponding documentation is excluded. To specify multiple prefixes to be excluded repeat the option identifier `-pre, --exclprefix`. |
 | `-r, --root` | False | The root folder of your file structure. This is used to calculate relative paths for the YAML files. You could use this to pass your respoitory root meaning that the YAML files, will be relative to the repository. Rather than your file system. |
 | `x, --exit` | False | Flag with forces the CLI to stop execution after an error. If this flag is not passed then the CLI will continue executing until it has finished processing all the files. |
 | `-c, --recurse` | False | Flag allowing for the search to be executed recursively, against the directory supplied by `-f, --folder`. Otherwise the search will only happen in the top-level folder. |
-| `-w, --overwrite` | False | Flag to overwwrite any existing documentation files. |
+| `-w, --overwrite` | False | Flag to overwwrite any existing documentation preview files. |
