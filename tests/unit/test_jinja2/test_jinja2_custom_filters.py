@@ -1,2 +1,3 @@
 import pytest
-from src.custom_jinja.custom_jinja_filters import CustomJinjaFilters
+
+from src.jinja2.jinja2_custom_filters import Jinja2CustomFilters

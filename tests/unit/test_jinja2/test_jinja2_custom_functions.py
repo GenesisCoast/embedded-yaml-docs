@@ -1,2 +1,3 @@
 import pytest
-from src.custom_jinja.custom_jinja_functions import CustomJinjaFunctions
+
+from src.jinja2.jinja2_custom_functions import Jinja2CustomFunctions
