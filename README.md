@@ -1,6 +1,17 @@
 [![Upload Python Package](https://github.com/GenesisCoast/embedded-yaml-docs/actions/workflows/python-publish.yml/badge.svg)](https://github.com/GenesisCoast/embedded-yaml-docs/actions/workflows/python-publish.yml) [![PyPI version](https://badge.fury.io/py/embedded-yaml-docs.svg)](https://badge.fury.io/py/embedded-yaml-docs)
 
-# Embedded YAML Docs
+<h3>
+  
+```
+Embedded...
+__  _____    __  _____       ____                 
+\ \/ /   |  /  |/  / /      / __ \____  __________
+ \  / /| | / /|_/ / /      / / / / __ \/ ___/ ___/
+ / / ___ |/ /  / / /___   / /_/ / /_/ / /__(__  ) 
+/_/_/  |_/_/  /_/_____/  /_____/\____/\___/____/                   
+```
+  
+</h3>
 
 Embedded YAML docs is a CLI for generating documentation about a YAML file, using the comments that have been embedded in the file.
 
