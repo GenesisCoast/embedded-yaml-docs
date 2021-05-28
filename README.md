@@ -1,6 +1,4 @@
-[![Upload Python Package](https://github.com/GenesisCoast/embedded-yaml-docs/actions/workflows/python-publish.yml/badge.svg)](https://github.com/GenesisCoast/embedded-yaml-docs/actions/workflows/python-publish.yml)
-
-[![PyPI version](https://badge.fury.io/py/embedded-yaml-docs.svg)](https://badge.fury.io/py/embedded-yaml-docs)
+[![Upload Python Package](https://github.com/GenesisCoast/embedded-yaml-docs/actions/workflows/python-publish.yml/badge.svg)](https://github.com/GenesisCoast/embedded-yaml-docs/actions/workflows/python-publish.yml) [![PyPI version](https://badge.fury.io/py/embedded-yaml-docs.svg)](https://badge.fury.io/py/embedded-yaml-docs)
 
 # Embedded YAML Docs
 
