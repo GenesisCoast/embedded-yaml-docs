@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/GenesisCoast/embedded-yaml-docs.svg?branch=master)](https://travis-ci.org/GenesisCoast/embedded-yaml-docs)
+[![Upload Python Package](https://github.com/GenesisCoast/embedded-yaml-docs/actions/workflows/python-publish.yml/badge.svg)](https://github.com/GenesisCoast/embedded-yaml-docs/actions/workflows/python-publish.yml)
 
 [![PyPI version](https://badge.fury.io/py/embedded-yaml-docs.svg)](https://badge.fury.io/py/embedded-yaml-docs)
 
