@@ -13,6 +13,8 @@ __  _____    __  _____       ____
   
 </h3>
 
+# Introduction
+
 Embedded YAML docs is a CLI for generating documentation about a YAML file, using the comments that have been embedded in the file.
 
 This is incredibly useful for YAML pipelines and configuration files where you may want to automatically generate user readable documentation, depending on the contents of the file.
