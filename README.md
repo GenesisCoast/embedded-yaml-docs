@@ -13,11 +13,43 @@ __  _____    __  _____       ____
   
 </h3>
 
-# Introduction
-
 Embedded YAML docs is a CLI tool for generating documentation about a YAML file, using code doc comments. 
 
 This is incredibly useful for YAML pipelines/templates and additional configuration files. Where you may want to automatically generate easily readable documentation, depending on the contents of the file.
+
+For example when the preview command is on the YAML section (left) it will output the all the comments under the property `docs` (right). The generation command works similarly except instead of outputting the YAML it is piped into the Jinja2 templating engine.
+
+<table align="center">
+<tr>
+<td>
+<br>
+  
+```
+parameters:
+- name: resourceGroupName
+  type: string
+  # Description:
+  #   Resource group name.
+```
+  
+</td>
+<td>
+  ➡️
+</td>
+<td>
+<br>
+
+```
+parameters:
+- name: resourceGroupName
+  type: string
+  docs:
+    Description: Resource group name.
+```
+
+</td>
+</tr>
+</table>
 
 # Installation
 
