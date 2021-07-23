@@ -61,6 +61,12 @@ pip install embedded-yaml-docs
 
 Or localled by using `pip install .` when your in the same directory as `setup.py`.
 
+For version 0.0.12 of the library you need to install version 2.11.1 of the Jinja2 library.
+
+```
+pip3 install "Jinja2==2.11.2"
+```
+
 # Commands
 
 Below is a short explanation of the various CLI commands that are available.
