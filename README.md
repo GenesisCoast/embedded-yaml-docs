@@ -53,9 +53,9 @@ parameters:
 
 # Installation
 
-Currently this CLI only supports Jinja2 `2.x.x`. A fix for other versions of Jinja2 will be released with the new CLI version.
+Currently this CLI does not support Jinja v3. A fix for other versions of Jinja2 will be released with the new CLI version.
 
-You can make sure you have the correct version of Jinja2 installed by running the following command, prior to installing the CLI.
+You can make sure you have the correct version of Jinja installed, by running the following command prior to installing the CLI.
 
 ```
 pip3 install "Jinja2>=2.11.2,<3.0.0"
