@@ -53,6 +53,14 @@ parameters:
 
 # Installation
 
+Currently this CLI only supports Jinja2 `2.x.x`. A fix for other versions of Jinja2 will be released with the new CLI version.
+
+You can make sure you have the correct version of Jinja2 installed by running the following command, prior to installing the CLI.
+
+```
+pip3 install "Jinja2>=2.11.2,<3.0.0"
+```
+
 The tool can be installed by running:
 
 ```
@@ -61,11 +69,6 @@ pip install embedded-yaml-docs
 
 Or localled by using `pip install .` when your in the same directory as `setup.py`.
 
-For version 0.0.12 of the library you need to install version 2.11.1 of the Jinja2 library.
-
-```
-pip3 install "Jinja2==2.11.2"
-```
 
 # Commands
 
