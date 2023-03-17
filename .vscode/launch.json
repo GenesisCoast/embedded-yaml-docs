@@ -5,17 +5,17 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Python: Install & Run CLI",
+            "type": "PowerShell",
+            "request": "launch",
+            "script": "python 'setup.py' install",
+            "cwd": "${cwd}"
+        },
+        {
             "name": "Python: Current File (Integrated Terminal)",
             "type": "python",
             "console": "integratedTerminal",
             "program": "${file}",
-            "request": "launch"
-        },
-        {
-            "name": "Python: Install & Run CLI",
-            "type": "python",
-            "console": "externalTerminal",
-            "program": "python 'setup.py' install",
             "request": "launch"
         }
     ]
