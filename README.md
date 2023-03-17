@@ -53,6 +53,8 @@ parameters:
 
 # Installation
 
+## From PyPi
+
 Currently this CLI does not support Jinja v3. A fix for other versions of Jinja2 will be released with the new CLI version.
 
 You can make sure you have the correct version of Jinja installed, by running the following command prior to installing the CLI.
@@ -69,6 +71,21 @@ pip install embedded-yaml-docs
 
 Or localled by using `pip install .` when your in the same directory as `setup.py`.
 
+## Locally
+
+If you want to run the latest and greatest you can do so with the following steps:
+
+1. Open a command prompt as administrator.
+
+2. Change the current path in the command prompt to the root of the solution.
+
+3. Run `python 'setup.py' install`.
+
+4. Run the CLI normally, the latest code should be added to your `$PATH` using the alias `embedded-yaml-docs`.
+
+Alternatively, if you open the solution in Visual Studio (as administrator) you can use the `Python: Install & Run CLI` command to automatically do the above steps.
+
+Each time the code is changed you will need to re-run above to force the installed CLI to update.
 
 # Commands
 
