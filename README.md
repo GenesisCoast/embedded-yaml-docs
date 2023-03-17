@@ -130,7 +130,7 @@ The preview command is used to generate a preview of the documentation data, tha
 The `preview folder` command generates the documentation preview for a single file. 
 
 ```
-> embedded-yaml-docs preview folder [OPTIONS]
+> embedded-yaml-docs preview file [OPTIONS]
 ```
 
 The following options can be supplied for the `generate folder` command.
