@@ -1,7 +1,10 @@
 from setuptools import setup, find_packages
 
-with open('requirements.txt', mode='r') as f:
+with open('requirements.txt', mode='r', encoding='utf-8') as f:
     requirements = f.read().splitlines()
+
+with open('README.md', mode='r', encoding='utf-8') as f:
+    readme = f.read()
 
 setup(
     name='embedded-yaml-docs',
@@ -20,7 +23,7 @@ setup(
     author='Harry Sanderson',
     author_email='harrysanderson@hotmail.co.uk',
     description='embedded_yaml_docs is a CLI used for generating markdown documentation, from your YAML files. This can be useful for documenting YAML files such as CI pipelines.',
-    long_description=open('README.md').read(),
+    long_description=readme,
     long_description_content_type='text/markdown',
     classifiers=[
         'Development Status :: 4 - Beta',
