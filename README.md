@@ -60,7 +60,7 @@ Currently this CLI does not support Jinja v3. A fix for other versions of Jinja2
 You can make sure you have the correct version of Jinja installed, by running the following command prior to installing the CLI.
 
 ```
-pip3 install "Jinja2>=2.11.2,<3.0.0"
+pip3 install "Jinja2"
 ```
 
 The tool can be installed by running:
