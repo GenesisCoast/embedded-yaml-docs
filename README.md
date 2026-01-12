@@ -186,4 +186,4 @@ The following options can be supplied for the `generate folder` command.
 
 # Dev Notes
 
-- Publishing to pip setup `python -m pip install build twine`, build `python -m build`, check `twine check dist/*`, publish `twine upload dist/*` 
+- Publishing to pip setup `python -m pip install build twine`, build `python -m build`, check `twine check dist/*`, publish `twine upload dist/* --password '<api_token>'` 
