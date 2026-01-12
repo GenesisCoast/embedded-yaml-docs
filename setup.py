@@ -1,10 +1,14 @@
 from setuptools import setup, find_packages
 
 with open('requirements.txt', mode='r', encoding='utf-8') as f:
+    print('Reading requirements.txt...')
     requirements = f.read().splitlines()
+    print(f'Found {len(requirements)} requirements.')
 
 with open('README.md', mode='r', encoding='utf-8') as f:
+    print('Reading README.md...')
     readme = f.read()
+    print(f'Found {len(readme)} characters in README.md.')
 
 setup(
     name='embedded-yaml-docs',
