@@ -79,7 +79,7 @@ If you want to run the latest and greatest you can do so with the following step
 
 2. Change the current path in the command prompt to the root of the solution.
 
-3. Run `pip install requirements.txt`.
+3. Run `pip install -r requirements.txt`.
 
 4. Run `python 'setup.py' install`.
 
