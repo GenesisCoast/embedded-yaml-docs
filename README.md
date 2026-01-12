@@ -79,9 +79,11 @@ If you want to run the latest and greatest you can do so with the following step
 
 2. Change the current path in the command prompt to the root of the solution.
 
-3. Run `python 'setup.py' install`.
+3. Run `pip install requirements.txt`.
 
-4. Run the CLI normally, the latest code should be added to your `$PATH` using the alias `embedded-yaml-docs`.
+4. Run `python 'setup.py' install`.
+
+5. Run the CLI normally, the latest code should be added to your `$PATH` using the alias `embedded-yaml-docs`.
 
 Alternatively, if you open the solution in Visual Studio (as administrator) you can use the `Python: Install & Run CLI` command to automatically do the above steps.
 
