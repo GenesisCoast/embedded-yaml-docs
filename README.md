@@ -55,8 +55,6 @@ parameters:
 
 ## From PyPi
 
-Currently this CLI does not support Jinja v3. A fix for other versions of Jinja2 will be released with the new CLI version.
-
 You can make sure you have the correct version of Jinja installed, by running the following command prior to installing the CLI.
 
 ```
