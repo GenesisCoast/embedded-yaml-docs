@@ -183,3 +183,7 @@ The following options can be supplied for the `generate folder` command.
 | `x, --exit` | False | Flag with forces the CLI to stop execution after an error. If this flag is not passed then the CLI will continue executing until it has finished processing all the files. |
 | `-c, --recurse` | False | Flag allowing for the search to be executed recursively, against the directory supplied by `-f, --folder`. Otherwise the search will only happen in the top-level folder. |
 | `-w, --overwrite` | False | Flag to overwwrite any existing documentation preview files. |
+
+# Dev Notes
+
+- Publishing to pip setup `python -m pip install build twine`, build `python -m build`, check `twine check dist/*`, publish `twine upload dist/* --password '<api_token>'` 
