@@ -25,7 +25,7 @@ class DependencyContainer:
 
 
 @click.group(invoke_without_command=True)
-@click.version_option("1.0.0")
+@click.version_option("1.0.1")
 @click.pass_context
 def cli(ctx: Context):
     """
@@ -36,6 +36,10 @@ def cli(ctx: Context):
 
     f = Figlet(font='slant', justify='')
     print(f.renderText("YAML Docs"))
+    
+    if ctx.invoked_subcommand is None:
+        click.echo(ctx.get_help())
+        return
 
     yaml = RuamelYAMLWrapper()
 

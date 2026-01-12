@@ -1,6 +1,6 @@
 click
-Jinja2
+Jinja2>=3.0.0
 pyfiglet
 ruamel.yaml
-markupsafe
+markupsafe>=2.0.0
 conditions-py

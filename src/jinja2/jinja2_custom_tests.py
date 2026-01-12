@@ -1,5 +1,5 @@
 import re
-from markupsafe import soft_unicode
+from markupsafe import soft_str as soft_unicode
 
 
 class Jinja2CustomTests:

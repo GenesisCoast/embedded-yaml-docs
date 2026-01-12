@@ -1,4 +1,4 @@
-from ruamel.yaml import YAML, safe_load
+from ruamel.yaml import YAML
 from ruamel.yaml.compat import StringIO
 
 
@@ -6,6 +6,11 @@ class RuamelYAMLWrapper(YAML):
     """
     Custom implementation of the ruamel library.
     """
+
+    def __init__(self):
+        """Initialize the wrapper with both full and safe parsers."""
+        super().__init__()
+        self._safe_yaml = YAML(typ='safe', pure=True)
 
 
     def dump_str(self, data: any, **kwargs) -> str:
@@ -53,4 +58,4 @@ class RuamelYAMLWrapper(YAML):
         Returns:
             The parsed YAML document.
         """
-        return safe_load(stream)
+        return self._safe_yaml.load(stream)

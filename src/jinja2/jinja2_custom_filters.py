@@ -1,4 +1,4 @@
-from jinja2.filters import prepare_select_or_reject, contextfilter
+from jinja2.filters import prepare_select_or_reject, pass_context
 from markupsafe import soft_str
 from os.path import join, abspath
 
@@ -65,7 +65,7 @@ class Jinja2CustomFilters:
 
 
     @staticmethod
-    @contextfilter
+    @pass_context
     def do_rejectattr_ifkey(*args, **kwargs):
         """
         Iterates through the collection and only rejects the item if the attribute
@@ -91,7 +91,7 @@ class Jinja2CustomFilters:
 
 
     @staticmethod
-    @contextfilter
+    @pass_context
     def do_selectattr_ifkey(*args, **kwargs):
         """
         Iterates through the collection and only selects the item if the attribute
@@ -117,7 +117,7 @@ class Jinja2CustomFilters:
 
 
     @staticmethod
-    @contextfilter
+    @pass_context
     def do_rejectkey(*args, **kwargs):
         """
         Iterates through the collection and rejects the item it it contains the specified key.
@@ -142,7 +142,7 @@ class Jinja2CustomFilters:
 
 
     @staticmethod
-    @contextfilter
+    @pass_context
     def do_selectkey(*args, **kwargs):
         """
         Iterates through the collection and selects the item it it contains the specified key.
